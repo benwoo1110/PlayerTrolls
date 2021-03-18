@@ -1,7 +1,7 @@
 package dev.benergy10.playertrolls.trolls;
 
 import dev.benergy10.minecrafttools.commands.flags.FlagGroup;
-import dev.benergy10.minecrafttools.commands.flags.FlagResult;
+import dev.benergy10.minecrafttools.commands.flags.FlagValues;
 import dev.benergy10.playertrolls.PlayerTrolls;
 import dev.benergy10.playertrolls.Troll;
 import dev.benergy10.playertrolls.TrollPlayer;
@@ -44,9 +44,9 @@ public class FireTrail extends Troll {
     }
 
     @Override
-    protected @Nullable TrollTask start(TrollPlayer trollPlayer, FlagResult flags) {
+    protected @Nullable TrollTask start(TrollPlayer trollPlayer, FlagValues flags) {
         Player player = trollPlayer.getPlayer();
-        trollPlayer.scheduleDeactivation(this, flags.getValue(TrollFlags.DURATION));
+        trollPlayer.scheduleDeactivation(this, flags.get(TrollFlags.DURATION));
         this.fireMovement.subscribe(player);
         return new Task(player);
     }

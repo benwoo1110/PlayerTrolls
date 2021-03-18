@@ -1,6 +1,6 @@
 package dev.benergy10.playertrolls;
 
-import dev.benergy10.minecrafttools.commands.flags.FlagResult;
+import dev.benergy10.minecrafttools.commands.flags.FlagValues;
 import dev.benergy10.minecrafttools.utils.Logging;
 import dev.benergy10.minecrafttools.utils.TimeConverter;
 import dev.benergy10.playertrolls.events.TrollActivateEvent;
@@ -27,7 +27,7 @@ public class TrollPlayer {
         this.scheduledDeactivation = new HashMap<>();
     }
 
-    public boolean activateTroll(Troll troll, FlagResult flags) {
+    public boolean activateTroll(Troll troll, FlagValues flags) {
         if (!troll.isRegistered()) {
             throw new IllegalArgumentException("Troll is not registered: " + troll.getName());
         }

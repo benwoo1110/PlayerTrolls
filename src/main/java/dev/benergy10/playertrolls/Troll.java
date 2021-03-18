@@ -1,7 +1,7 @@
 package dev.benergy10.playertrolls;
 
 import dev.benergy10.minecrafttools.commands.flags.FlagGroup;
-import dev.benergy10.minecrafttools.commands.flags.FlagResult;
+import dev.benergy10.minecrafttools.commands.flags.FlagValues;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -22,7 +22,7 @@ public abstract class Troll {
         return registered;
     }
 
-    protected abstract @Nullable TrollTask start(TrollPlayer trollPlayer, FlagResult flags);
+    protected abstract @Nullable TrollTask start(TrollPlayer trollPlayer, FlagValues flags);
 
     public abstract @NotNull String getName();
 

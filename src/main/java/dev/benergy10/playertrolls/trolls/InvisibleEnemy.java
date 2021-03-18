@@ -1,7 +1,7 @@
 package dev.benergy10.playertrolls.trolls;
 
 import dev.benergy10.minecrafttools.commands.flags.FlagGroup;
-import dev.benergy10.minecrafttools.commands.flags.FlagResult;
+import dev.benergy10.minecrafttools.commands.flags.FlagValues;
 import dev.benergy10.playertrolls.PlayerTrolls;
 import dev.benergy10.playertrolls.Troll;
 import dev.benergy10.playertrolls.TrollPlayer;
@@ -25,9 +25,9 @@ public class InvisibleEnemy extends Troll {
     }
 
     @Override
-    protected @Nullable TrollTask start(TrollPlayer trollPlayer, FlagResult flags) {
-        trollPlayer.scheduleDeactivation(this, flags.getValue(TrollFlags.DURATION));
-        return new Task(this.damageTask(trollPlayer.getPlayer(), flags.getValue(TrollFlags.DO_DAMAGE)));
+    protected @Nullable TrollTask start(TrollPlayer trollPlayer, FlagValues flags) {
+        trollPlayer.scheduleDeactivation(this, flags.get(TrollFlags.DURATION));
+        return new Task(this.damageTask(trollPlayer.getPlayer(), flags.get(TrollFlags.DO_DAMAGE)));
     }
 
     private BukkitTask damageTask(Player player, boolean doDamage) {

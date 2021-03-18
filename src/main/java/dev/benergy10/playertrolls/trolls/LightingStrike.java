@@ -1,7 +1,7 @@
 package dev.benergy10.playertrolls.trolls;
 
 import dev.benergy10.minecrafttools.commands.flags.FlagGroup;
-import dev.benergy10.minecrafttools.commands.flags.FlagResult;
+import dev.benergy10.minecrafttools.commands.flags.FlagValues;
 import dev.benergy10.minecrafttools.utils.TimeConverter;
 import dev.benergy10.playertrolls.PlayerTrolls;
 import dev.benergy10.playertrolls.Troll;
@@ -27,13 +27,13 @@ public class LightingStrike extends Troll {
     }
 
     @Override
-    protected @Nullable TrollTask start(TrollPlayer trollPlayer, FlagResult flags) {
+    protected @Nullable TrollTask start(TrollPlayer trollPlayer, FlagValues flags) {
         final StrikingTask strikingTask = new StrikingTask();
         strikingTask.trollPlayer = trollPlayer;
-        strikingTask.max = flags.getValue(TrollFlags.REPEAT);
-        strikingTask.interval = TimeConverter.secondsToTicks(flags.getValue(TrollFlags.INTERVAL));
-        strikingTask.intensity = flags.getValue(TrollFlags.INTENSITY);
-        strikingTask.withDamage = flags.getValue(TrollFlags.DO_DAMAGE);
+        strikingTask.max = flags.get(TrollFlags.REPEAT);
+        strikingTask.interval = TimeConverter.secondsToTicks(flags.get(TrollFlags.INTERVAL));
+        strikingTask.intensity = flags.get(TrollFlags.INTENSITY);
+        strikingTask.withDamage = flags.get(TrollFlags.DO_DAMAGE);
         return new Task(strikingTask.run());
     }
 
