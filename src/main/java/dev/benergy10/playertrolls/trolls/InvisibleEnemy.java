@@ -5,8 +5,6 @@ import dev.benergy10.minecrafttools.commands.flags.FlagResult;
 import dev.benergy10.playertrolls.PlayerTrolls;
 import dev.benergy10.playertrolls.Troll;
 import dev.benergy10.playertrolls.TrollPlayer;
-import dev.benergy10.playertrolls.data.DataContainer;
-import dev.benergy10.playertrolls.data.DataKey;
 import dev.benergy10.playertrolls.utils.PacketHelper;
 import dev.benergy10.playertrolls.utils.TrollFlags;
 import org.bukkit.Bukkit;
@@ -20,25 +18,16 @@ import java.lang.reflect.InvocationTargetException;
 
 public class InvisibleEnemy extends Troll {
 
-    private static final DataKey<BukkitTask> DAMAGE_TASK = DataKey.create(BukkitTask.class, "damage");
-
-    private final PlayerTrolls plugin;
     private final FlagGroup flagGroup = FlagGroup.of(TrollFlags.DO_DAMAGE, TrollFlags.DURATION);
 
     public InvisibleEnemy(PlayerTrolls plugin) {
-        this.plugin = plugin;
+        super(plugin);
     }
 
     @Override
-    public @NotNull String getName() {
-        return "invisible-enemy";
-    }
-
-    @Override
-    protected @Nullable DataContainer start(TrollPlayer trollPlayer, FlagResult flags) {
-        return new DataContainer()
-                .set(DAMAGE_TASK, this.damageTask(trollPlayer.getPlayer(), flags.getValue(TrollFlags.DO_DAMAGE)))
-                .set(TrollPlayer.STOP_TASK, trollPlayer.scheduleDeactivation(this, flags.getValue(TrollFlags.DURATION)));
+    protected @Nullable TrollTask start(TrollPlayer trollPlayer, FlagResult flags) {
+        trollPlayer.scheduleDeactivation(this, flags.getValue(TrollFlags.DURATION));
+        return new Task(this.damageTask(trollPlayer.getPlayer(), flags.getValue(TrollFlags.DO_DAMAGE)));
     }
 
     private BukkitTask damageTask(Player player, boolean doDamage) {
@@ -64,13 +53,32 @@ public class InvisibleEnemy extends Troll {
     }
 
     @Override
-    protected boolean end(TrollPlayer trollPlayer, DataContainer data) {
-        data.get(DAMAGE_TASK).cancel();
-        return true;
+    public @NotNull String getName() {
+        return "invisible-enemy";
     }
 
     @Override
-    public FlagGroup getFlagGroup() {
+    public @NotNull FlagGroup getFlagGroup() {
         return this.flagGroup;
+    }
+
+    @Override
+    public boolean requiresProtocolLib() {
+        return true;
+    }
+
+    private class Task extends TrollTask {
+
+        private final BukkitTask damageTask;
+
+        private Task(BukkitTask damageTask) {
+            this.damageTask = damageTask;
+        }
+
+        @Override
+        protected boolean stop() {
+            this.damageTask.cancel();
+            return false;
+        }
     }
 }

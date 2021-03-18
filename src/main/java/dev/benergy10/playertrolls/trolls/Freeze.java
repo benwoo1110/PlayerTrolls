@@ -5,7 +5,6 @@ import dev.benergy10.minecrafttools.commands.flags.FlagResult;
 import dev.benergy10.playertrolls.PlayerTrolls;
 import dev.benergy10.playertrolls.Troll;
 import dev.benergy10.playertrolls.TrollPlayer;
-import dev.benergy10.playertrolls.data.DataContainer;
 import dev.benergy10.playertrolls.utils.SubscribableEvent;
 import dev.benergy10.playertrolls.utils.TrollFlags;
 import org.bukkit.Location;
@@ -18,7 +17,6 @@ import org.jetbrains.annotations.Nullable;
 
 public class Freeze extends Troll {
 
-    private final PlayerTrolls plugin;
     private final FlagGroup flagGroup = FlagGroup.of(TrollFlags.DURATION);
 
     private final SubscribableEvent<PlayerMoveEvent, Player> freezeMovement = new SubscribableEvent
@@ -44,8 +42,17 @@ public class Freeze extends Troll {
             .create();
 
     public Freeze(PlayerTrolls plugin) {
-        this.plugin = plugin;
+        super(plugin);
         this.freezeMovement.register(plugin);
+    }
+
+    @Override
+    protected @Nullable TrollTask start(TrollPlayer trollPlayer, FlagResult flags) {
+        Player player = trollPlayer.getPlayer();
+        player.setWalkSpeed(0F);
+        this.freezeMovement.subscribe(player);
+        trollPlayer.scheduleDeactivation(this, flags.getValue(TrollFlags.DURATION));
+        return new Task(player);
     }
 
     @Override
@@ -54,22 +61,28 @@ public class Freeze extends Troll {
     }
 
     @Override
-    protected @Nullable DataContainer start(TrollPlayer trollPlayer, FlagResult flags) {
-        trollPlayer.getPlayer().setWalkSpeed(0F);
-        this.freezeMovement.subscribe(trollPlayer.getPlayer());
-        return new DataContainer()
-                .set(TrollPlayer.STOP_TASK, trollPlayer.scheduleDeactivation(this, flags.getValue(TrollFlags.DURATION)));
-    }
-
-    @Override
-    protected boolean end(TrollPlayer trollPlayer, DataContainer data) {
-        this.freezeMovement.unsubscribe(trollPlayer.getPlayer());
-        trollPlayer.getPlayer().setWalkSpeed(0.2F);
-        return true;
-    }
-
-    @Override
-    public FlagGroup getFlagGroup() {
+    public @NotNull FlagGroup getFlagGroup() {
         return this.flagGroup;
+    }
+
+    @Override
+    public boolean requiresProtocolLib() {
+        return false;
+    }
+
+    private class Task extends TrollTask {
+
+        private final Player player;
+
+        private Task(Player player) {
+            this.player = player;
+        }
+
+        @Override
+        protected boolean stop() {
+            freezeMovement.unsubscribe(this.player);
+            this.player.setWalkSpeed(0.2F);
+            return false;
+        }
     }
 }

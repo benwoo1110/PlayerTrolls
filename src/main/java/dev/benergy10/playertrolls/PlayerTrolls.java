@@ -14,7 +14,6 @@ import dev.benergy10.playertrolls.utils.CommandTools;
 public final class PlayerTrolls extends MinecraftPlugin {
 
     private TrollManager trollManager;
-    private TrollPlayerManager trollPlayerManager;
     private ProtocolManager protocolManager;
 
     @Override
@@ -22,29 +21,18 @@ public final class PlayerTrolls extends MinecraftPlugin {
         Logging.doDebugLog(true);
         this.protocolManager = ProtocolLibrary.getProtocolManager();
 
-        this.trollManager = new TrollManager();
-        this.trollManager.register(new LightingStrike(this));
+        this.trollManager = new TrollManager(this);
         this.trollManager.register(new Freeze(this));
+        this.trollManager.register(new LightingStrike(this));
         this.trollManager.register(new FireTrail(this));
         this.trollManager.register(new CrazySwingHands(this));
         this.trollManager.register(new InvisibleEnemy(this));
 
-        this.trollPlayerManager = new TrollPlayerManager(this);
-
         CommandTools.setUp(this);
-    }
-
-    @Override
-    public void onDisable() {
-
     }
 
     public TrollManager getTrollManager() {
         return trollManager;
-    }
-
-    public TrollPlayerManager getTrollPlayerManager() {
-        return trollPlayerManager;
     }
 
     public ProtocolManager getProtocolManager() {

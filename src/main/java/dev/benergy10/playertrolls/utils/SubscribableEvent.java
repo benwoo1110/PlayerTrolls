@@ -23,6 +23,7 @@ public class SubscribableEvent<T extends Event, S> {
     private boolean ignoreCancelled = false;
     private Function<T, S> eventTarget;
     private Consumer<T> handler;
+    private boolean autoUnsubscribe;
 
     private SubscribableEvent(Class<T> eventClass) {
         this.eventClass = eventClass;
@@ -55,6 +56,9 @@ public class SubscribableEvent<T extends Event, S> {
                 return;
             }
             this.handler.accept(eventInstance);
+            if (this.autoUnsubscribe) {
+                this.subscribers.remove(target);
+            }
         };
     }
 
@@ -121,6 +125,11 @@ public class SubscribableEvent<T extends Event, S> {
 
         public Creator<T, S> handler(Consumer<T> handler) {
             this.event.handler = handler;
+            return this;
+        }
+
+        public Creator<T, S> autoUnsubscribe(boolean autoUnsubscribe) {
+            this.event.autoUnsubscribe = autoUnsubscribe;
             return this;
         }
 

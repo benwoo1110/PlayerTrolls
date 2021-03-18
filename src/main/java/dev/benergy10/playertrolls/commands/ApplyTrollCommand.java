@@ -22,7 +22,7 @@ public class ApplyTrollCommand extends Command {
                         @NotNull Troll troll,
                         @NotNull String[] flagsArray) {
 
-        FlagResult flagResult = troll.getFlagGroup().calculateResult(flagsArray);
-        trollPlayer.activateTroll(troll, flagResult);
+        FlagResult flags = troll.getFlagGroup().calculateResult(flagsArray);
+        trollPlayer.activateTroll(troll, flags);
     }
 }

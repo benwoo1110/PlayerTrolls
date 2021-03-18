@@ -3,11 +3,9 @@ package dev.benergy10.playertrolls.trolls;
 import dev.benergy10.minecrafttools.commands.flags.FlagGroup;
 import dev.benergy10.minecrafttools.commands.flags.FlagResult;
 import dev.benergy10.minecrafttools.utils.TimeConverter;
-import dev.benergy10.playertrolls.data.DataContainer;
 import dev.benergy10.playertrolls.PlayerTrolls;
 import dev.benergy10.playertrolls.Troll;
 import dev.benergy10.playertrolls.TrollPlayer;
-import dev.benergy10.playertrolls.data.DataKey;
 import dev.benergy10.playertrolls.utils.TrollFlags;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
@@ -19,29 +17,24 @@ import java.util.stream.IntStream;
 
 public class LightingStrike extends Troll {
 
-    private static final DataKey<BukkitTask> STRIKE_TASK = DataKey.create(BukkitTask.class, "swing");
-
-    private final PlayerTrolls plugin;
-    private final FlagGroup flagGroup = FlagGroup.of(TrollFlags.REPEAT, TrollFlags.INTERVAL, TrollFlags.DO_DAMAGE, TrollFlags.INTENSITY);
+    private final FlagGroup flagGroup = FlagGroup.of(
+            TrollFlags.REPEAT, TrollFlags.INTERVAL,
+            TrollFlags.DO_DAMAGE, TrollFlags.INTENSITY
+    );
 
     public LightingStrike(PlayerTrolls plugin) {
-        this.plugin = plugin;
+        super(plugin);
     }
 
     @Override
-    public @NotNull String getName() {
-        return "lightning-strike";
-    }
-
-    @Override
-    protected @Nullable DataContainer start(TrollPlayer trollPlayer, FlagResult flags) {
+    protected @Nullable TrollTask start(TrollPlayer trollPlayer, FlagResult flags) {
         final StrikingTask strikingTask = new StrikingTask();
         strikingTask.trollPlayer = trollPlayer;
         strikingTask.max = flags.getValue(TrollFlags.REPEAT);
         strikingTask.interval = TimeConverter.secondsToTicks(flags.getValue(TrollFlags.INTERVAL));
         strikingTask.intensity = flags.getValue(TrollFlags.INTENSITY);
         strikingTask.withDamage = flags.getValue(TrollFlags.DO_DAMAGE);
-        return new DataContainer().set(STRIKE_TASK, strikingTask.run());
+        return new Task(strikingTask.run());
     }
 
     private class StrikingTask {
@@ -74,13 +67,32 @@ public class LightingStrike extends Troll {
     }
 
     @Override
-    protected boolean end(TrollPlayer trollPlayer, DataContainer data) {
-        data.get(STRIKE_TASK).cancel();
-        return true;
+    public @NotNull String getName() {
+        return "lightning-strike";
     }
 
     @Override
-    public FlagGroup getFlagGroup() {
+    public @NotNull FlagGroup getFlagGroup() {
         return this.flagGroup;
+    }
+
+    @Override
+    public boolean requiresProtocolLib() {
+        return false;
+    }
+
+    private class Task extends TrollTask {
+
+        private final BukkitTask strikingTask;
+
+        private Task(BukkitTask strikingTask) {
+            this.strikingTask = strikingTask;
+        }
+
+        @Override
+        protected boolean stop() {
+            this.strikingTask.cancel();
+            return false;
+        }
     }
 }

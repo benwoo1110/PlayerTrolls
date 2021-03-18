@@ -5,7 +5,6 @@ import dev.benergy10.minecrafttools.commands.flags.FlagResult;
 import dev.benergy10.playertrolls.PlayerTrolls;
 import dev.benergy10.playertrolls.Troll;
 import dev.benergy10.playertrolls.TrollPlayer;
-import dev.benergy10.playertrolls.data.DataContainer;
 import dev.benergy10.playertrolls.utils.SubscribableEvent;
 import dev.benergy10.playertrolls.utils.TrollFlags;
 import org.bukkit.Bukkit;
@@ -20,7 +19,6 @@ import org.jetbrains.annotations.Nullable;
 
 public class FireTrail extends Troll {
 
-    private PlayerTrolls plugin;
     private final FlagGroup flagGroup = FlagGroup.of(TrollFlags.DURATION);
 
     private final SubscribableEvent<PlayerMoveEvent, Player> fireMovement = new SubscribableEvent
@@ -41,8 +39,16 @@ public class FireTrail extends Troll {
             .create();
 
     public FireTrail(PlayerTrolls plugin) {
-        this.plugin = plugin;
+        super(plugin);
         this.fireMovement.register(plugin);
+    }
+
+    @Override
+    protected @Nullable TrollTask start(TrollPlayer trollPlayer, FlagResult flags) {
+        Player player = trollPlayer.getPlayer();
+        trollPlayer.scheduleDeactivation(this, flags.getValue(TrollFlags.DURATION));
+        this.fireMovement.subscribe(player);
+        return new Task(player);
     }
 
     @Override
@@ -51,20 +57,27 @@ public class FireTrail extends Troll {
     }
 
     @Override
-    protected @Nullable DataContainer start(TrollPlayer trollPlayer, FlagResult flags) {
-        this.fireMovement.subscribe(trollPlayer.getPlayer());
-        return new DataContainer()
-                .set(TrollPlayer.STOP_TASK, trollPlayer.scheduleDeactivation(this, flags.getValue(TrollFlags.DURATION)));
-    }
-
-    @Override
-    protected boolean end(TrollPlayer trollPlayer, DataContainer data) {
-        this.fireMovement.unsubscribe(trollPlayer.getPlayer());
-        return true;
-    }
-
-    @Override
-    public FlagGroup getFlagGroup() {
+    public @NotNull FlagGroup getFlagGroup() {
         return flagGroup;
+    }
+
+    @Override
+    public boolean requiresProtocolLib() {
+        return false;
+    }
+
+    private class Task extends TrollTask {
+
+        private final Player player;
+
+        private Task(Player player) {
+            this.player = player;
+        }
+
+        @Override
+        protected boolean stop() {
+            fireMovement.unsubscribe(this.player);
+            return false;
+        }
     }
 }

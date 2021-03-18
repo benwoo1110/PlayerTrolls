@@ -3,33 +3,34 @@ package dev.benergy10.playertrolls;
 import dev.benergy10.minecrafttools.commands.flags.FlagResult;
 import dev.benergy10.minecrafttools.utils.Logging;
 import dev.benergy10.minecrafttools.utils.TimeConverter;
-import dev.benergy10.playertrolls.data.DataContainer;
-import dev.benergy10.playertrolls.data.DataKey;
-import dev.benergy10.playertrolls.events.TrollDeactivateEvent;
 import dev.benergy10.playertrolls.events.TrollActivateEvent;
+import dev.benergy10.playertrolls.events.TrollDeactivateEvent;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitTask;
 
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Set;
 
 public class TrollPlayer {
 
-    public static final DataKey<BukkitTask> STOP_TASK = DataKey.create(BukkitTask.class, "stop");
-
     private final PlayerTrolls plugin;
     private final Player player;
-    private final Map<Troll, DataContainer> activeTrolls;
+    private final Map<Troll, Troll.TrollTask> activeTrolls;
+    private final Map<Troll, BukkitTask> scheduledDeactivation;
 
-    public TrollPlayer(PlayerTrolls plugin, Player player) {
+    TrollPlayer(PlayerTrolls plugin, Player player) {
         this.plugin = plugin;
         this.player = player;
-        activeTrolls = new HashMap<>();
+        this.activeTrolls = new HashMap<>();
+        this.scheduledDeactivation = new HashMap<>();
     }
 
     public boolean activateTroll(Troll troll, FlagResult flags) {
+        if (!troll.isRegistered()) {
+            throw new IllegalArgumentException("Troll is not registered: " + troll.getName());
+        }
         TrollActivateEvent enableEvent = new TrollActivateEvent(troll, this);
         Bukkit.getPluginManager().callEvent(enableEvent);
         if (enableEvent.isCancelled()) {
@@ -37,34 +38,40 @@ public class TrollPlayer {
             return false;
         }
         Logging.debug("Activating troll '%s' for %s...",troll.getName(), this.player.getName());
-        DataContainer data = troll.start(this, flags);
-        if (data == null) {
+        Troll.TrollTask runner = troll.start(this, flags);
+        if (runner == null) {
             return false;
         }
-        this.activeTrolls.put(troll, data);
+        this.activeTrolls.put(troll, runner);
         return true;
     }
 
     public boolean deactivateTroll(Troll troll) {
-        Logging.debug("Deactivating troll '%s' for %s...", troll.getName(), this.player.getName());
-        DataContainer data = this.activeTrolls.remove(troll);
-        if (data == null) {
+        if (!troll.isRegistered()) {
+            throw new IllegalArgumentException("Troll is not registered: " + troll.getName());
+        }
+        Troll.TrollTask task = this.activeTrolls.remove(troll);
+        if (task == null) {
             return false;
         }
-        BukkitTask stopTask = data.get(STOP_TASK);
-        if (stopTask != null && !stopTask.isCancelled()) {
+        final BukkitTask stopTask = this.scheduledDeactivation.remove(troll);
+        if (stopTask != null) {
             stopTask.cancel();
         }
+        Logging.debug("Deactivating troll '%s' for %s...", troll.getName(), this.player.getName());
         Bukkit.getPluginManager().callEvent(new TrollDeactivateEvent(troll, this));
-        return troll.end(this, data);
+        return task.stop();
     }
 
-    public BukkitTask scheduleDeactivation(Troll troll, int seconds) {
-        return Bukkit.getScheduler().runTaskLater(
+    public void scheduleDeactivation(Troll troll, double seconds) {
+        BukkitTask oldTask = this.scheduledDeactivation.put(troll, Bukkit.getScheduler().runTaskLater(
                 this.plugin,
                 () -> this.deactivateTroll(troll),
                 TimeConverter.secondsToTicks(seconds)
-        );
+        ));
+        if (oldTask != null) {
+            oldTask.cancel();
+        }
     }
 
     public void deactivateAll() {
@@ -75,7 +82,7 @@ public class TrollPlayer {
         return this.activeTrolls.containsKey(troll);
     }
 
-    public Set<Troll> getActiveTrolls() {
+    public Collection<Troll> getActiveTrolls() {
         return this.activeTrolls.keySet();
     }
 

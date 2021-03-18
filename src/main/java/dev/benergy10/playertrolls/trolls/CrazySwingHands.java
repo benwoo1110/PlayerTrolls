@@ -2,11 +2,9 @@ package dev.benergy10.playertrolls.trolls;
 
 import dev.benergy10.minecrafttools.commands.flags.FlagGroup;
 import dev.benergy10.minecrafttools.commands.flags.FlagResult;
-import dev.benergy10.playertrolls.data.DataContainer;
 import dev.benergy10.playertrolls.PlayerTrolls;
 import dev.benergy10.playertrolls.Troll;
 import dev.benergy10.playertrolls.TrollPlayer;
-import dev.benergy10.playertrolls.data.DataKey;
 import dev.benergy10.playertrolls.utils.PacketHelper;
 import dev.benergy10.playertrolls.utils.TrollFlags;
 import org.bukkit.Bukkit;
@@ -19,25 +17,16 @@ import java.lang.reflect.InvocationTargetException;
 
 public class CrazySwingHands extends Troll {
 
-    private static final DataKey<BukkitTask> SWING_TASK = DataKey.create(BukkitTask.class, "swing");
-
-    private final PlayerTrolls plugin;
     private final FlagGroup flagGroup = FlagGroup.of(TrollFlags.DURATION);
 
     public CrazySwingHands(PlayerTrolls plugin) {
-        this.plugin = plugin;
+        super(plugin);
     }
 
     @Override
-    public @NotNull String getName() {
-        return "crazy-swing-hands";
-    }
-
-    @Override
-    protected @Nullable DataContainer start(TrollPlayer trollPlayer, FlagResult flags) {
-        return new DataContainer()
-                .set(SWING_TASK, this.swingTask(trollPlayer.getPlayer()))
-                .set(TrollPlayer.STOP_TASK, trollPlayer.scheduleDeactivation(this, flags.getValue(TrollFlags.DURATION)));
+    protected @Nullable TrollTask start(TrollPlayer trollPlayer, FlagResult flags) {
+        trollPlayer.scheduleDeactivation(this, flags.getValue(TrollFlags.DURATION));
+        return new Task(this.swingTask(trollPlayer.getPlayer()));
     }
 
     private BukkitTask swingTask(Player player) {
@@ -51,16 +40,12 @@ public class CrazySwingHands extends Troll {
                         type = (type == 0) ? 3 : 0;
                     }
                 },
-                0,
-                5
+                0, 5
         );
     }
 
     /**
      * https://wiki.vg/Protocol#Entity_Animation_.28clientbound.29
-     *
-     * @param player
-     * @param type
      */
     private void sendHandSwingPacket(Player player, int type) {
         try {
@@ -74,13 +59,32 @@ public class CrazySwingHands extends Troll {
     }
 
     @Override
-    protected boolean end(TrollPlayer trollPlayer, DataContainer data) {
-        data.get(SWING_TASK).cancel();
-        return true;
+    public @NotNull String getName() {
+        return "crazy-swing-hands";
     }
 
     @Override
-    public FlagGroup getFlagGroup() {
+    public @NotNull FlagGroup getFlagGroup() {
         return this.flagGroup;
+    }
+
+    @Override
+    public boolean requiresProtocolLib() {
+        return true;
+    }
+
+    private class Task extends TrollTask {
+
+        private final BukkitTask swingTask;
+
+        private Task(BukkitTask swingTask) {
+            this.swingTask = swingTask;
+        }
+
+        @Override
+        protected boolean stop() {
+            this.swingTask.cancel();
+            return false;
+        }
     }
 }

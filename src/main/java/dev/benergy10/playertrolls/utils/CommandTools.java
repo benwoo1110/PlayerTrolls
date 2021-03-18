@@ -56,7 +56,7 @@ public class CommandTools {
 
     private TrollPlayer parseTrollPlayer(BukkitCommandExecutionContext context) {
         String playerName = context.popFirstArg();
-        return this.plugin.getTrollPlayerManager().getTrollPlayer(playerName);
+        return this.plugin.getTrollManager().getTrollPlayer(playerName);
     }
 
     private Troll parseTroll(BukkitCommandExecutionContext context) {
