@@ -37,7 +37,7 @@ public class TrollManager {
         this.quitEvent.register(this.plugin);
     }
 
-    public void register(Troll troll) {
+    public TrollManager register(Troll troll) {
         String trollName = troll.getName().toLowerCase();
         if (troll.isRegistered()) {
             throw new IllegalArgumentException("This troll is already registered: " + trollName);
@@ -47,6 +47,7 @@ public class TrollManager {
         }
         this.trollMap.put(trollName, troll);
         troll.register();
+        return this;
     }
 
     public Troll getTroll(String name) {
