@@ -75,7 +75,7 @@ public class TrollPlayer {
     }
 
     public void deactivateAll() {
-        this.activeTrolls.keySet().forEach(this::deactivateTroll);
+        this.activeTrolls.keySet().iterator().forEachRemaining(this::deactivateTroll);
     }
 
     public boolean isActiveTroll(Troll troll) {
