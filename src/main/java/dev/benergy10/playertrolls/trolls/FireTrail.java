@@ -19,7 +19,7 @@ import org.jetbrains.annotations.Nullable;
 
 public class FireTrail extends Troll {
 
-    private final FlagGroup flagGroup = FlagGroup.of(TrollFlags.DURATION);
+    private static final FlagGroup FLAG_GROUP = FlagGroup.of(TrollFlags.DURATION);
 
     private final SubscribableEvent<PlayerMoveEvent, Player> fireMovement = new SubscribableEvent
             .Creator<PlayerMoveEvent, Player>(PlayerMoveEvent.class)
@@ -38,13 +38,13 @@ public class FireTrail extends Troll {
             })
             .create();
 
-    public FireTrail(PlayerTrolls plugin) {
+    public FireTrail(@NotNull PlayerTrolls plugin) {
         super(plugin);
         this.fireMovement.register(plugin);
     }
 
     @Override
-    protected @Nullable TrollTask start(TrollPlayer trollPlayer, FlagValues flags) {
+    protected @Nullable TrollTask start(@NotNull TrollPlayer trollPlayer, @NotNull FlagValues flags) {
         Player player = trollPlayer.getPlayer();
         trollPlayer.scheduleDeactivation(this, flags.get(TrollFlags.DURATION));
         this.fireMovement.subscribe(player);
@@ -58,7 +58,7 @@ public class FireTrail extends Troll {
 
     @Override
     public @NotNull FlagGroup getFlagGroup() {
-        return flagGroup;
+        return FLAG_GROUP;
     }
 
     @Override

@@ -18,19 +18,19 @@ public class SubscribableEvent<T extends Event, S> {
     private final Class<T> eventClass;
     private final Set<S> subscribers;
 
-    private boolean registered = false;
     private EventPriority priority = EventPriority.NORMAL;
     private boolean ignoreCancelled = false;
-    private boolean autoUnsubscribe = false;
+    private boolean oneTimeUse = false;
     private Function<T, S> eventTarget;
     private Consumer<T> handler;
+    private boolean registered = false;
 
     private SubscribableEvent(Class<T> eventClass) {
         this.eventClass = eventClass;
         this.subscribers = new HashSet<>();
     }
 
-    public void register(Plugin plugin) {
+    public boolean register(Plugin plugin) {
         if (this.registered) {
             throw new IllegalArgumentException("Event already registered!");
         }
@@ -43,6 +43,7 @@ public class SubscribableEvent<T extends Event, S> {
                 this.ignoreCancelled
         );
         this.registered = true;
+        return true;
     }
 
     private EventExecutor createExecutor() {
@@ -56,7 +57,7 @@ public class SubscribableEvent<T extends Event, S> {
                 return;
             }
             this.handler.accept(eventInstance);
-            if (this.autoUnsubscribe) {
+            if (this.oneTimeUse) {
                 this.subscribers.remove(target);
             }
         };
@@ -66,17 +67,21 @@ public class SubscribableEvent<T extends Event, S> {
         if (!this.registered) {
             throw new IllegalArgumentException("Register the event before adding subscribers!");
         }
-        Logging.info("Subscribing %s from %s...", s, this.eventClass.getName());
+        Logging.debug("Subscribing %s from %s...", s, this.eventClass.getName());
         return this.subscribers.add(s);
     }
 
     public boolean unsubscribe(S s) {
-        Logging.info("Unsubscribing %s from %s...", s, this.eventClass.getName());
+        Logging.debug("Unsubscribing %s from %s...", s, this.eventClass.getName());
         return this.subscribers.remove(s);
     }
 
     public Class<T> getEventClass() {
         return eventClass;
+    }
+
+    public boolean isSubscriber(S s) {
+        return this.subscribers.contains(s);
     }
 
     public Set<S> getSubscribers() {
@@ -93,6 +98,10 @@ public class SubscribableEvent<T extends Event, S> {
 
     public boolean isIgnoreCancelled() {
         return ignoreCancelled;
+    }
+
+    public boolean isOneTimeUse() {
+        return oneTimeUse;
     }
 
     public Function<T, S> getEventTarget() {
@@ -121,8 +130,8 @@ public class SubscribableEvent<T extends Event, S> {
             return this;
         }
 
-        public Creator<T, S> autoUnsubscribe(boolean autoUnsubscribe) {
-            this.event.autoUnsubscribe = autoUnsubscribe;
+        public Creator<T, S> oneTimeUse(boolean oneTimeUse) {
+            this.event.oneTimeUse = oneTimeUse;
             return this;
         }
 
@@ -137,6 +146,11 @@ public class SubscribableEvent<T extends Event, S> {
         }
 
         public SubscribableEvent<T, S> create() {
+            return this.event;
+        }
+
+        public SubscribableEvent<T, S> register(Plugin plugin) {
+            this.event.register(plugin);
             return this.event;
         }
     }

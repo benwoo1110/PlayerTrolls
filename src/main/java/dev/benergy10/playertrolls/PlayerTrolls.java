@@ -1,9 +1,9 @@
 package dev.benergy10.playertrolls;
 
 import com.comphenix.protocol.ProtocolLibrary;
-import com.comphenix.protocol.ProtocolManager;
 import dev.benergy10.minecrafttools.MinecraftPlugin;
 import dev.benergy10.minecrafttools.utils.Logging;
+import dev.benergy10.minecrafttools.utils.ReflectHelper;
 import dev.benergy10.playertrolls.trolls.CrazySwingHands;
 import dev.benergy10.playertrolls.trolls.FireTrail;
 import dev.benergy10.playertrolls.trolls.ForbidChest;
@@ -11,11 +11,13 @@ import dev.benergy10.playertrolls.trolls.Freeze;
 import dev.benergy10.playertrolls.trolls.InvisibleEnemy;
 import dev.benergy10.playertrolls.trolls.LightingStrike;
 import dev.benergy10.playertrolls.utils.CommandTools;
+import dev.benergy10.playertrolls.utils.PacketManager;
+import org.jetbrains.annotations.Nullable;
 
 public final class PlayerTrolls extends MinecraftPlugin {
 
     private TrollManager trollManager;
-    private ProtocolManager protocolManager;
+    private PacketManager packetManager;
 
     @Override
     public void enable() {
@@ -36,14 +38,18 @@ public final class PlayerTrolls extends MinecraftPlugin {
         return this.trollManager;
     }
 
-    public ProtocolManager getProtocolManager() {
-        if (this.protocolManager == null) {
-            this.protocolManager = ProtocolLibrary.getProtocolManager();
+    public @Nullable PacketManager getPacketManager() {
+        if (this.packetManager == null) {
+            if (!ReflectHelper.hasClass("com.comphenix.protocol.ProtocolLibrary")) {
+                Logging.warning("ProtocolLib not detected. Trolls that require this will not work!");
+                return null;
+            }
+            this.packetManager = PacketManager.of(ProtocolLibrary.getProtocolManager());
         }
-        return protocolManager;
+        return packetManager;
     }
 
-    public boolean hasProtocolManager() {
-        return this.getProtocolManager() != null;
+    public boolean hasPacketManager() {
+        return this.getPacketManager() != null;
     }
 }

@@ -2,10 +2,10 @@ package dev.benergy10.playertrolls;
 
 import com.google.common.base.Function;
 import dev.benergy10.playertrolls.utils.SubscribableEvent;
-import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.event.player.PlayerEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
+import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.Collection;
@@ -20,7 +20,7 @@ public class TrollManager {
 
     private final SubscribableEvent<PlayerQuitEvent, Player> quitEvent = new SubscribableEvent
             .Creator<PlayerQuitEvent, Player>(PlayerQuitEvent.class)
-            .autoUnsubscribe(true)
+            .oneTimeUse(true)
             .eventTarget(PlayerEvent::getPlayer)
             .handler(event -> {
                 TrollPlayer trollPlayer = this.playerMap.remove(event.getPlayer());
@@ -30,14 +30,14 @@ public class TrollManager {
             })
             .create();
 
-    public TrollManager(PlayerTrolls plugin) {
+    public TrollManager(@NotNull PlayerTrolls plugin) {
         this.plugin = plugin;
         this.trollMap = new HashMap<>();
         this.playerMap = new HashMap<>();
         this.quitEvent.register(this.plugin);
     }
 
-    public TrollManager register(Troll troll) {
+    public @NotNull TrollManager register(@NotNull Troll troll) {
         String trollName = troll.getName().toLowerCase();
         if (troll.isRegistered()) {
             throw new IllegalArgumentException("This troll is already registered: " + trollName);
@@ -50,32 +50,22 @@ public class TrollManager {
         return this;
     }
 
-    public Troll getTroll(String name) {
+    public @Nullable Troll getTroll(@Nullable String name) {
         return this.trollMap.get(name.toLowerCase());
     }
 
-    public Collection<Troll> getTrolls() {
+    public @NotNull Collection<Troll> getTrolls() {
         return this.trollMap.values();
     }
 
-    public Collection<String> getTrollNames() {
+    public @NotNull Collection<String> getTrollNames() {
         return this.trollMap.keySet();
     }
 
-    public TrollPlayer getTrollPlayer(@Nullable Player player) {
-        if (player == null) {
-            return null;
-        }
+    public @NotNull TrollPlayer getTrollPlayer(@NotNull Player player) {
         return this.playerMap.computeIfAbsent(player, (Function<Player, TrollPlayer>) input -> {
             this.quitEvent.subscribe(player);
             return new TrollPlayer(this.plugin, input);
         });
-    }
-
-    public TrollPlayer getTrollPlayer(@Nullable String playerName) {
-        if (playerName == null) {
-            return null;
-        }
-        return this.getTrollPlayer(Bukkit.getPlayerExact(playerName));
     }
 }

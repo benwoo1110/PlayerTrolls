@@ -17,7 +17,7 @@ import java.util.stream.IntStream;
 
 public class LightingStrike extends Troll {
 
-    private final FlagGroup flagGroup = FlagGroup.of(
+    private static final FlagGroup FLAG_GROUP = FlagGroup.of(
             TrollFlags.REPEAT, TrollFlags.INTERVAL,
             TrollFlags.DO_DAMAGE, TrollFlags.INTENSITY
     );
@@ -27,7 +27,7 @@ public class LightingStrike extends Troll {
     }
 
     @Override
-    protected @Nullable TrollTask start(TrollPlayer trollPlayer, FlagValues flags) {
+    protected @Nullable TrollTask start(@NotNull TrollPlayer trollPlayer, @NotNull FlagValues flags) {
         final StrikingTask strikingTask = new StrikingTask();
         strikingTask.trollPlayer = trollPlayer;
         strikingTask.max = flags.get(TrollFlags.REPEAT);
@@ -73,7 +73,7 @@ public class LightingStrike extends Troll {
 
     @Override
     public @NotNull FlagGroup getFlagGroup() {
-        return this.flagGroup;
+        return FLAG_GROUP;
     }
 
     @Override

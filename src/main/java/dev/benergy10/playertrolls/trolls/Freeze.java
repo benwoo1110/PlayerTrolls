@@ -17,7 +17,7 @@ import org.jetbrains.annotations.Nullable;
 
 public class Freeze extends Troll {
 
-    private final FlagGroup flagGroup = FlagGroup.of(TrollFlags.DURATION);
+    private static final FlagGroup FLAG_GROUP = FlagGroup.of(TrollFlags.DURATION);
 
     private final SubscribableEvent<PlayerMoveEvent, Player> freezeMovement = new SubscribableEvent
             .Creator<PlayerMoveEvent, Player>(PlayerMoveEvent.class)
@@ -47,7 +47,7 @@ public class Freeze extends Troll {
     }
 
     @Override
-    protected @Nullable TrollTask start(TrollPlayer trollPlayer, FlagValues flags) {
+    protected @Nullable TrollTask start(@NotNull TrollPlayer trollPlayer, @NotNull FlagValues flags) {
         Player player = trollPlayer.getPlayer();
         player.setWalkSpeed(0F);
         this.freezeMovement.subscribe(player);
@@ -62,7 +62,7 @@ public class Freeze extends Troll {
 
     @Override
     public @NotNull FlagGroup getFlagGroup() {
-        return this.flagGroup;
+        return FLAG_GROUP;
     }
 
     @Override

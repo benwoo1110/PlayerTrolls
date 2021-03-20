@@ -4,16 +4,17 @@ import dev.benergy10.minecrafttools.acf.CommandIssuer;
 import dev.benergy10.minecrafttools.acf.annotation.CommandAlias;
 import dev.benergy10.minecrafttools.acf.annotation.Subcommand;
 import dev.benergy10.playertrolls.PlayerTrolls;
+import org.jetbrains.annotations.NotNull;
 
 @CommandAlias("playertrolls|trolls")
 public class ReloadCommand extends Command {
 
-    public ReloadCommand(PlayerTrolls plugin) {
+    public ReloadCommand(@NotNull PlayerTrolls plugin) {
         super(plugin);
     }
 
     @Subcommand("reload")
-    public void onReload(CommandIssuer issuer) {
+    public void onReload(@NotNull CommandIssuer issuer) {
         issuer.sendMessage("Reloading plugin...");
     }
 }

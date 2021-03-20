@@ -23,6 +23,8 @@ import java.util.HashSet;
 
 public class ForbidChest extends Troll {
 
+    private static final FlagGroup FLAG_GROUP = FlagGroup.of(TrollFlags.DURATION);
+
     private static final Collection<Material> CHEST_MATERIALS = Collections.unmodifiableSet(
             new HashSet<Material>() {{
                 add(Material.CHEST);
@@ -32,8 +34,6 @@ public class ForbidChest extends Troll {
                 add(Material.LEGACY_CHEST);
             }}
     );
-
-    private final FlagGroup flagGroup = FlagGroup.of(TrollFlags.DURATION);
 
     private final SubscribableEvent<PlayerInteractEvent, Player> blockChestInteract = new SubscribableEvent
             .Creator<PlayerInteractEvent, Player>(PlayerInteractEvent.class)
@@ -59,7 +59,7 @@ public class ForbidChest extends Troll {
     }
 
     @Override
-    protected @Nullable TrollTask start(TrollPlayer trollPlayer, FlagValues flags) {
+    protected @Nullable TrollTask start(@NotNull TrollPlayer trollPlayer, @NotNull FlagValues flags) {
         this.blockChestInteract.subscribe(trollPlayer.getPlayer());
         trollPlayer.scheduleDeactivation(this, flags.get(TrollFlags.DURATION));
         return new Task(trollPlayer.getPlayer());
@@ -72,7 +72,7 @@ public class ForbidChest extends Troll {
 
     @Override
     public @NotNull FlagGroup getFlagGroup() {
-        return this.flagGroup;
+        return FLAG_GROUP;
     }
 
     @Override

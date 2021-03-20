@@ -10,7 +10,7 @@ public abstract class Troll {
     protected final PlayerTrolls plugin;
     private boolean registered = false;
 
-    protected Troll(PlayerTrolls plugin) {
+    protected Troll(@NotNull PlayerTrolls plugin) {
         this.plugin = plugin;
     }
 
@@ -22,7 +22,7 @@ public abstract class Troll {
         return registered;
     }
 
-    protected abstract @Nullable TrollTask start(TrollPlayer trollPlayer, FlagValues flags);
+    protected abstract @Nullable TrollTask start(@NotNull TrollPlayer trollPlayer, @NotNull FlagValues flags);
 
     public abstract @NotNull String getName();
 
@@ -32,5 +32,13 @@ public abstract class Troll {
 
     protected abstract static class TrollTask {
         protected abstract boolean stop();
+    }
+
+    @Override
+    public String toString() {
+        return "Troll{" +
+                "name=" + this.getName() +
+                ", registered=" + registered +
+                '}';
     }
 }

@@ -2,10 +2,12 @@ package dev.benergy10.playertrolls.trolls;
 
 import dev.benergy10.minecrafttools.commands.flags.FlagGroup;
 import dev.benergy10.minecrafttools.commands.flags.FlagValues;
+import dev.benergy10.minecrafttools.utils.Logging;
 import dev.benergy10.playertrolls.PlayerTrolls;
 import dev.benergy10.playertrolls.Troll;
 import dev.benergy10.playertrolls.TrollPlayer;
-import dev.benergy10.playertrolls.utils.PacketHelper;
+import dev.benergy10.playertrolls.utils.Alternator;
+import dev.benergy10.playertrolls.utils.PacketManager;
 import dev.benergy10.playertrolls.utils.TrollFlags;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
@@ -13,49 +15,32 @@ import org.bukkit.scheduler.BukkitTask;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-import java.lang.reflect.InvocationTargetException;
-
 public class CrazySwingHands extends Troll {
 
-    private final FlagGroup flagGroup = FlagGroup.of(TrollFlags.DURATION);
+    private static final FlagGroup FLAG_GROUP = FlagGroup.of(TrollFlags.DURATION);
 
     public CrazySwingHands(PlayerTrolls plugin) {
         super(plugin);
     }
 
     @Override
-    protected @Nullable TrollTask start(TrollPlayer trollPlayer, FlagValues flags) {
+    protected @Nullable TrollTask start(@NotNull TrollPlayer trollPlayer, @NotNull FlagValues flags) {
+        PacketManager packetManager = this.plugin.getPacketManager();
+        if (packetManager == null) {
+            Logging.warning("ProtocolLib not detected! Troll will not work.");
+            return null;
+        }
         trollPlayer.scheduleDeactivation(this, flags.get(TrollFlags.DURATION));
-        return new Task(this.swingTask(trollPlayer.getPlayer()));
+        return new Task(this.swingTask(packetManager, trollPlayer.getPlayer()));
     }
 
-    private BukkitTask swingTask(Player player) {
+    private BukkitTask swingTask(@NotNull PacketManager packetManager, @NotNull Player player) {
+        Alternator<Integer> handType = Alternator.of(0, 3);
         return Bukkit.getScheduler().runTaskTimer(
                 this.plugin,
-                new Runnable() {
-                    private int type = 0;
-                    @Override
-                    public void run() {
-                        sendHandSwingPacket(player, type);
-                        type = (type == 0) ? 3 : 0;
-                    }
-                },
+                () -> packetManager.sendPacket(player, packetManager.createAnimationPacket(player, handType.get())),
                 0, 5
         );
-    }
-
-    /**
-     * https://wiki.vg/Protocol#Entity_Animation_.28clientbound.29
-     */
-    private void sendHandSwingPacket(Player player, int type) {
-        try {
-            this.plugin.getProtocolManager().sendServerPacket(
-                    player,
-                    PacketHelper.createAnimationPacket(player, type)
-            );
-        } catch (InvocationTargetException e) {
-            e.printStackTrace();
-        }
     }
 
     @Override
@@ -65,7 +50,7 @@ public class CrazySwingHands extends Troll {
 
     @Override
     public @NotNull FlagGroup getFlagGroup() {
-        return this.flagGroup;
+        return FLAG_GROUP;
     }
 
     @Override
@@ -77,7 +62,7 @@ public class CrazySwingHands extends Troll {
 
         private final BukkitTask swingTask;
 
-        private Task(BukkitTask swingTask) {
+        private Task(@NotNull BukkitTask swingTask) {
             this.swingTask = swingTask;
         }
 
