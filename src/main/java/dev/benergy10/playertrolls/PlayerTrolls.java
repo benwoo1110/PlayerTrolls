@@ -42,4 +42,8 @@ public final class PlayerTrolls extends MinecraftPlugin {
         }
         return protocolManager;
     }
+
+    public boolean hasProtocolManager() {
+        return this.getProtocolManager() != null;
+    }
 }
