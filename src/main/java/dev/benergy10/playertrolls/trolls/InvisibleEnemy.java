@@ -27,7 +27,7 @@ public class InvisibleEnemy extends Troll {
     protected @Nullable TrollTask start(@NotNull TrollPlayer trollPlayer, @NotNull FlagValues flags) {
         PacketManager packetManager = this.plugin.getPacketManager();
         if (packetManager == null) {
-            Logging.warning("ProtocolLib not detected! Troll will not work.");
+            Logging.warning("This troll does not work without ProtocolLib.");
             return null;
         }
         trollPlayer.scheduleDeactivation(this, flags.get(TrollFlags.DURATION));
