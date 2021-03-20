@@ -92,7 +92,7 @@ public class LightingStrike extends Troll {
         @Override
         protected boolean stop() {
             this.strikingTask.cancel();
-            return false;
+            return true;
         }
     }
 }

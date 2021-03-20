@@ -69,7 +69,7 @@ public class CrazySwingHands extends Troll {
         @Override
         protected boolean stop() {
             this.swingTask.cancel();
-            return false;
+            return true;
         }
     }
 }

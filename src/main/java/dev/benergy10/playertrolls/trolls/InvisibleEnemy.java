@@ -75,7 +75,7 @@ public class InvisibleEnemy extends Troll {
         @Override
         protected boolean stop() {
             this.damageTask.cancel();
-            return false;
+            return true;
         }
     }
 }

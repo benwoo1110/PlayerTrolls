@@ -91,7 +91,7 @@ public class ForbidChest extends Troll {
         @Override
         protected boolean stop() {
             blockChestInteract.unsubscribe(this.player);
-            return false;
+            return true;
         }
     }
 }

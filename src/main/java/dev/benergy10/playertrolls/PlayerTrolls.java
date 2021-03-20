@@ -7,6 +7,7 @@ import dev.benergy10.minecrafttools.configs.YamlFile;
 import dev.benergy10.minecrafttools.utils.Logging;
 import dev.benergy10.minecrafttools.utils.ReflectHelper;
 import dev.benergy10.playertrolls.trolls.CrazySwingHands;
+import dev.benergy10.playertrolls.trolls.CreepyCreeper;
 import dev.benergy10.playertrolls.trolls.FireTrail;
 import dev.benergy10.playertrolls.trolls.ForbidChest;
 import dev.benergy10.playertrolls.trolls.Freeze;
@@ -36,7 +37,8 @@ public final class PlayerTrolls extends MinecraftPlugin {
                 .register(new FireTrail(this))
                 .register(new CrazySwingHands(this))
                 .register(new InvisibleEnemy(this))
-                .register(new ForbidChest(this));
+                .register(new ForbidChest(this))
+                .register(new CreepyCreeper(this));
 
         CommandTools.setUp(this);
     }

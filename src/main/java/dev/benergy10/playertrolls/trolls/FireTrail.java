@@ -77,7 +77,7 @@ public class FireTrail extends Troll {
         @Override
         protected boolean stop() {
             fireMovement.unsubscribe(this.player);
-            return false;
+            return true;
         }
     }
 }

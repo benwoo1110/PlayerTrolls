@@ -58,7 +58,7 @@ public class SubscribableEvent<T extends Event, S> {
             }
             this.handler.accept(eventInstance);
             if (this.oneTimeUse) {
-                this.subscribers.remove(target);
+                this.unsubscribe(target);
             }
         };
     }

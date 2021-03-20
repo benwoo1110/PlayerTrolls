@@ -82,7 +82,7 @@ public class Freeze extends Troll {
         protected boolean stop() {
             freezeMovement.unsubscribe(this.player);
             this.player.setWalkSpeed(0.2F);
-            return false;
+            return true;
         }
     }
 }
