@@ -10,6 +10,7 @@ import dev.benergy10.playertrolls.utils.TrollFlags;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
+import org.bukkit.event.Event;
 import org.bukkit.event.block.Action;
 import org.bukkit.event.player.PlayerEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
@@ -22,7 +23,7 @@ import java.util.HashSet;
 
 public class ForbidChest extends Troll {
 
-    private static final Collection<Material> chestMaterials = Collections.unmodifiableSet(
+    private static final Collection<Material> CHEST_MATERIALS = Collections.unmodifiableSet(
             new HashSet<Material>() {{
                 add(Material.CHEST);
                 add(Material.ENDER_CHEST);
@@ -45,14 +46,16 @@ public class ForbidChest extends Troll {
                 if (clickedBlock == null) {
                     return;
                 }
-                if (chestMaterials.contains(event.getClickedBlock().getType())) {
-                    event.setCancelled(true);
+                if (CHEST_MATERIALS.contains(event.getClickedBlock().getType())) {
+                    event.setUseInteractedBlock(Event.Result.DENY);
+                    event.setUseItemInHand(Event.Result.DENY);
                 }
             })
             .create();
 
     public ForbidChest(PlayerTrolls plugin) {
         super(plugin);
+        this.blockChestInteract.register(plugin);
     }
 
     @Override
