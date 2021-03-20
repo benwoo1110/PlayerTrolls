@@ -1,7 +1,7 @@
 name: PlayerTrolls
 version: ${project.version}
 main: dev.benergy10.playertrolls.PlayerTrolls
-api-version: 1.16
+api-version: 1.13
 authors: [ benwo1110 ]
-description: Troll your friends ;)
+description: ${project.description}
 softdepend: ['ProtocolLib']
