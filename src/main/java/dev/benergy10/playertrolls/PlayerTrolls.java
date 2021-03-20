@@ -2,6 +2,8 @@ package dev.benergy10.playertrolls;
 
 import com.comphenix.protocol.ProtocolLibrary;
 import dev.benergy10.minecrafttools.MinecraftPlugin;
+import dev.benergy10.minecrafttools.configs.CommentedYamlFile;
+import dev.benergy10.minecrafttools.configs.YamlFile;
 import dev.benergy10.minecrafttools.utils.Logging;
 import dev.benergy10.minecrafttools.utils.ReflectHelper;
 import dev.benergy10.playertrolls.trolls.CrazySwingHands;
@@ -12,16 +14,21 @@ import dev.benergy10.playertrolls.trolls.InvisibleEnemy;
 import dev.benergy10.playertrolls.trolls.LightingStrike;
 import dev.benergy10.playertrolls.utils.CommandTools;
 import dev.benergy10.playertrolls.utils.PacketManager;
+import dev.benergy10.playertrolls.utils.TrollOptions;
+import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 public final class PlayerTrolls extends MinecraftPlugin {
 
     private TrollManager trollManager;
     private PacketManager packetManager;
+    private YamlFile config;
 
     @Override
     public void enable() {
         Logging.doDebugLog(true);
+
+        this.config = new CommentedYamlFile(this.getConfigFile(), TrollOptions.getOptions(), TrollOptions.header());
 
         this.trollManager = new TrollManager(this)
                 .register(new Freeze(this))
@@ -51,5 +58,10 @@ public final class PlayerTrolls extends MinecraftPlugin {
 
     public boolean hasPacketManager() {
         return this.getPacketManager() != null;
+    }
+
+    @NotNull
+    public YamlFile getTrollConfig() {
+        return config;
     }
 }
