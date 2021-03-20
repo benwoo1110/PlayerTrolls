@@ -20,6 +20,7 @@ public class TrollManager {
 
     private final SubscribableEvent<PlayerQuitEvent, Player> quitEvent = new SubscribableEvent
             .Creator<PlayerQuitEvent, Player>(PlayerQuitEvent.class)
+            .autoUnsubscribe(true)
             .eventTarget(PlayerEvent::getPlayer)
             .handler(event -> {
                 TrollPlayer trollPlayer = this.playerMap.remove(event.getPlayer());
@@ -27,7 +28,6 @@ public class TrollManager {
                     trollPlayer.deactivateAll();
                 }
             })
-            .autoUnsubscribe(true)
             .create();
 
     public TrollManager(PlayerTrolls plugin) {

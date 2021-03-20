@@ -21,9 +21,9 @@ public class SubscribableEvent<T extends Event, S> {
     private boolean registered = false;
     private EventPriority priority = EventPriority.NORMAL;
     private boolean ignoreCancelled = false;
+    private boolean autoUnsubscribe = false;
     private Function<T, S> eventTarget;
     private Consumer<T> handler;
-    private boolean autoUnsubscribe;
 
     private SubscribableEvent(Class<T> eventClass) {
         this.eventClass = eventClass;
@@ -63,6 +63,9 @@ public class SubscribableEvent<T extends Event, S> {
     }
 
     public boolean subscribe(S s) {
+        if (!this.registered) {
+            throw new IllegalArgumentException("Register the event before adding subscribers!");
+        }
         Logging.info("Subscribing %s from %s...", s, this.eventClass.getName());
         return this.subscribers.add(s);
     }
@@ -118,6 +121,11 @@ public class SubscribableEvent<T extends Event, S> {
             return this;
         }
 
+        public Creator<T, S> autoUnsubscribe(boolean autoUnsubscribe) {
+            this.event.autoUnsubscribe = autoUnsubscribe;
+            return this;
+        }
+
         public Creator<T, S> eventTarget(Function<T, S> eventTarget) {
             this.event.eventTarget = eventTarget;
             return this;
@@ -125,11 +133,6 @@ public class SubscribableEvent<T extends Event, S> {
 
         public Creator<T, S> handler(Consumer<T> handler) {
             this.event.handler = handler;
-            return this;
-        }
-
-        public Creator<T, S> autoUnsubscribe(boolean autoUnsubscribe) {
-            this.event.autoUnsubscribe = autoUnsubscribe;
             return this;
         }
 
