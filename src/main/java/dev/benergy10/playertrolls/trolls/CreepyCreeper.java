@@ -6,6 +6,7 @@ import dev.benergy10.playertrolls.PlayerTrolls;
 import dev.benergy10.playertrolls.Troll;
 import dev.benergy10.playertrolls.TrollPlayer;
 import dev.benergy10.playertrolls.utils.SubscribableEvent;
+import dev.benergy10.playertrolls.utils.TrollFlags;
 import org.bukkit.Location;
 import org.bukkit.entity.Creeper;
 import org.bukkit.entity.Entity;
@@ -18,6 +19,8 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 public class CreepyCreeper extends Troll {
+
+    private static final FlagGroup FLAG_GROUP = FlagGroup.of(TrollFlags.DO_DAMAGE, TrollFlags.EXPLODE_BLOCKS);
 
     private final SubscribableEvent<EntityExplodeEvent, Entity> preventExplodeBlock = new SubscribableEvent
             .Creator<EntityExplodeEvent, Entity>(EntityExplodeEvent.class)
@@ -43,8 +46,12 @@ public class CreepyCreeper extends Troll {
         Location location = player.getLocation().add(player.getLocation().getDirection().multiply(-1));
         Creeper creeper = (Creeper) location.getWorld().spawnEntity(location, EntityType.CREEPER);
         creeper.setTarget(player);
-        this.preventExplodeBlock.subscribe(creeper);
-        this.preventPlayerDamage.subscribe(creeper);
+        if (!flags.get(TrollFlags.EXPLODE_BLOCKS)) {
+            this.preventExplodeBlock.subscribe(creeper);
+        }
+        if (!flags.get(TrollFlags.DO_DAMAGE)) {
+            this.preventPlayerDamage.subscribe(creeper);
+        }
         trollPlayer.scheduleDeactivation(this, 5);
         return new Task();
     }
@@ -56,7 +63,7 @@ public class CreepyCreeper extends Troll {
 
     @Override
     public @NotNull FlagGroup getFlagGroup() {
-        return FlagGroup.empty();
+        return FLAG_GROUP;
     }
 
     @Override
