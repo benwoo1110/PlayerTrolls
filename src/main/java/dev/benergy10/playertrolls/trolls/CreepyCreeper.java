@@ -31,7 +31,6 @@ public class CreepyCreeper extends Troll {
 
     private final SubscribableEvent<EntityDamageByEntityEvent, Entity> preventPlayerDamage = new SubscribableEvent
             .Creator<EntityDamageByEntityEvent, Entity>(EntityDamageByEntityEvent.class)
-            .oneTimeUse(true)
             .eventTarget(EntityDamageByEntityEvent::getDamager)
             .runner(event -> event.setDamage(0))
             .register(this.plugin);
@@ -53,7 +52,7 @@ public class CreepyCreeper extends Troll {
             this.preventPlayerDamage.subscribe(creeper);
         }
         trollPlayer.scheduleDeactivation(this, 5);
-        return new Task();
+        return new Task(creeper);
     }
 
     @Override
@@ -73,9 +72,15 @@ public class CreepyCreeper extends Troll {
 
     private class Task extends TrollTask {
 
-        private Task() { }
+        private final Creeper creeper;
+
+        private Task(Creeper creeper) {
+            this.creeper = creeper;
+        }
 
         @Override
-        protected void stop() { }
+        protected void stop() {
+            preventPlayerDamage.unsubscribe(this.creeper);
+        }
     }
 }
