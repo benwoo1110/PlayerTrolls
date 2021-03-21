@@ -37,11 +37,10 @@ public class FireTrail extends Troll {
                     Bukkit.getScheduler().runTaskLater(this.plugin, () -> block.setType(Material.FIRE), 4);
                 }
             })
-            .create();
+            .register(this.plugin);
 
     public FireTrail(@NotNull PlayerTrolls plugin) {
         super(plugin);
-        this.fireMovement.register(plugin);
     }
 
     @Override

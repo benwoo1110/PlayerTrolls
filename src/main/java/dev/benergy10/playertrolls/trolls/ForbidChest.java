@@ -52,11 +52,10 @@ public class ForbidChest extends Troll {
                     event.setUseItemInHand(Event.Result.DENY);
                 }
             })
-            .create();
+            .register(this.plugin);
 
     public ForbidChest(PlayerTrolls plugin) {
         super(plugin);
-        this.blockChestInteract.register(plugin);
     }
 
     @Override

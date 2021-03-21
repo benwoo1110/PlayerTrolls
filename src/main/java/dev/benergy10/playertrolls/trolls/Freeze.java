@@ -40,11 +40,10 @@ public class Freeze extends Troll {
                 event.setTo(to);
                 event.getPlayer().setVelocity(new Vector(0, 0, 0));
             })
-            .create();
+            .register(this.plugin);
 
     public Freeze(PlayerTrolls plugin) {
         super(plugin);
-        this.freezeMovement.register(plugin);
     }
 
     @Override
