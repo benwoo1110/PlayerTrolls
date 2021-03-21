@@ -43,7 +43,7 @@ public class TrollPlayer {
             Logging.debug("Troll activation was canceled by another plugin!");
             return false;
         }
-        Logging.debug("Activating troll '%s' for %s...",troll.getName(), this.player.getName());
+        Logging.debug("Activating troll %s for %s...",troll, this.player);
         Troll.TrollTask runner = troll.start(this, flags);
         if (runner == null) {
             return false;
@@ -65,7 +65,7 @@ public class TrollPlayer {
         if (stopTask != null) {
             stopTask.cancel();
         }
-        Logging.debug("Deactivating troll '%s' for %s...", troll, this.player);
+        Logging.debug("Deactivating troll %s for %s...", troll, this.player);
         Bukkit.getPluginManager().callEvent(new TrollDeactivateEvent(troll, this));
         return task.stop();
     }
