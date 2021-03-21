@@ -5,7 +5,6 @@ import dev.benergy10.minecrafttools.MinecraftPlugin;
 import dev.benergy10.minecrafttools.configs.CommentedYamlFile;
 import dev.benergy10.minecrafttools.configs.YamlFile;
 import dev.benergy10.minecrafttools.utils.Logging;
-import dev.benergy10.minecrafttools.utils.ReflectHelper;
 import dev.benergy10.playertrolls.trolls.CrazySwingHands;
 import dev.benergy10.playertrolls.trolls.CreepyCreeper;
 import dev.benergy10.playertrolls.trolls.FireTrail;
@@ -17,9 +16,7 @@ import dev.benergy10.playertrolls.trolls.Transfiguration;
 import dev.benergy10.playertrolls.utils.CommandTools;
 import dev.benergy10.playertrolls.utils.PacketManager;
 import dev.benergy10.playertrolls.utils.TrollOptions;
-import me.libraryaddict.disguise.LibsDisguises;
 import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 
 public final class PlayerTrolls extends MinecraftPlugin {
 

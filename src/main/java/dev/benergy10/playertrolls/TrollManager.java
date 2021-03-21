@@ -30,7 +30,7 @@ public class TrollManager {
             })
             .create();
 
-    public TrollManager(@NotNull PlayerTrolls plugin) {
+    TrollManager(@NotNull PlayerTrolls plugin) {
         this.plugin = plugin;
         this.trollMap = new HashMap<>();
         this.playerMap = new HashMap<>();
