@@ -6,6 +6,7 @@ import dev.benergy10.minecrafttools.utils.TimeConverter;
 import dev.benergy10.playertrolls.PlayerTrolls;
 import dev.benergy10.playertrolls.Troll;
 import dev.benergy10.playertrolls.TrollPlayer;
+import dev.benergy10.playertrolls.utils.DependencyRequirement;
 import dev.benergy10.playertrolls.utils.TrollFlags;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
@@ -77,8 +78,8 @@ public class LightingStrike extends Troll {
     }
 
     @Override
-    public boolean requiresProtocolLib() {
-        return false;
+    public DependencyRequirement getRequirement() {
+        return DependencyRequirement.NONE;
     }
 
     private class Task extends TrollTask {

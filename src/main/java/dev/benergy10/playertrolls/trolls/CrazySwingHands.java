@@ -6,6 +6,7 @@ import dev.benergy10.playertrolls.PlayerTrolls;
 import dev.benergy10.playertrolls.Troll;
 import dev.benergy10.playertrolls.TrollPlayer;
 import dev.benergy10.playertrolls.utils.Alternator;
+import dev.benergy10.playertrolls.utils.DependencyRequirement;
 import dev.benergy10.playertrolls.utils.TrollFlags;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
@@ -53,8 +54,8 @@ public class CrazySwingHands extends Troll {
     }
 
     @Override
-    public boolean requiresProtocolLib() {
-        return false;
+    public DependencyRequirement getRequirement() {
+        return DependencyRequirement.NONE;
     }
 
     private class Task extends TrollTask {

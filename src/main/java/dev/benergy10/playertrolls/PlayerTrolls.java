@@ -17,6 +17,7 @@ import dev.benergy10.playertrolls.trolls.Transfiguration;
 import dev.benergy10.playertrolls.utils.CommandTools;
 import dev.benergy10.playertrolls.utils.PacketManager;
 import dev.benergy10.playertrolls.utils.TrollOptions;
+import me.libraryaddict.disguise.LibsDisguises;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -49,19 +50,11 @@ public final class PlayerTrolls extends MinecraftPlugin {
         return this.trollManager;
     }
 
-    public @Nullable PacketManager getPacketManager() {
+    public @NotNull PacketManager getPacketManager() {
         if (this.packetManager == null) {
-            if (!ReflectHelper.hasClass("com.comphenix.protocol.ProtocolLibrary")) {
-                Logging.warning("ProtocolLib not detected. Trolls that require this will not work!");
-                return null;
-            }
-            this.packetManager = PacketManager.of(ProtocolLibrary.getProtocolManager());
+            this.packetManager = new PacketManager(ProtocolLibrary.getProtocolManager());
         }
         return packetManager;
-    }
-
-    public boolean hasPacketManager() {
-        return this.getPacketManager() != null;
     }
 
     @NotNull

@@ -33,6 +33,10 @@ public class TrollPlayer {
         if (!troll.isRegistered()) {
             throw new IllegalArgumentException("Troll is not registered: " + troll.getName());
         }
+        if (!troll.getRequirement().hasRequiredClasses()) {
+            Logging.warning("You did not meet the requirement of this troll: %s", troll.getRequirement());
+            return false;
+        }
         TrollActivateEvent enableEvent = new TrollActivateEvent(troll, this);
         Bukkit.getPluginManager().callEvent(enableEvent);
         if (enableEvent.isCancelled()) {

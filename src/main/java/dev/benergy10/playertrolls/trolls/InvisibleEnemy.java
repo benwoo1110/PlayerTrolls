@@ -6,6 +6,7 @@ import dev.benergy10.minecrafttools.utils.Logging;
 import dev.benergy10.playertrolls.PlayerTrolls;
 import dev.benergy10.playertrolls.Troll;
 import dev.benergy10.playertrolls.TrollPlayer;
+import dev.benergy10.playertrolls.utils.DependencyRequirement;
 import dev.benergy10.playertrolls.utils.PacketManager;
 import dev.benergy10.playertrolls.utils.TrollFlags;
 import org.bukkit.Bukkit;
@@ -26,10 +27,6 @@ public class InvisibleEnemy extends Troll {
     @Override
     protected @Nullable TrollTask start(@NotNull TrollPlayer trollPlayer, @NotNull FlagValues flags) {
         PacketManager packetManager = this.plugin.getPacketManager();
-        if (packetManager == null) {
-            Logging.warning("This troll does not work without ProtocolLib.");
-            return null;
-        }
         trollPlayer.scheduleDeactivation(this, flags.get(TrollFlags.DURATION));
         return new Task(this.damageTask(packetManager, trollPlayer.getPlayer(), flags.get(TrollFlags.DO_DAMAGE)));
     }
@@ -60,8 +57,8 @@ public class InvisibleEnemy extends Troll {
     }
 
     @Override
-    public boolean requiresProtocolLib() {
-        return true;
+    public DependencyRequirement getRequirement() {
+        return DependencyRequirement.PROTOCOL_LIB;
     }
 
     private class Task extends TrollTask {

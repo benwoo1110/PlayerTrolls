@@ -5,6 +5,7 @@ import dev.benergy10.minecrafttools.commands.flags.FlagValues;
 import dev.benergy10.playertrolls.PlayerTrolls;
 import dev.benergy10.playertrolls.Troll;
 import dev.benergy10.playertrolls.TrollPlayer;
+import dev.benergy10.playertrolls.utils.DependencyRequirement;
 import dev.benergy10.playertrolls.utils.TrollFlags;
 import me.libraryaddict.disguise.DisguiseConfig;
 import me.libraryaddict.disguise.disguisetypes.DisguiseType;
@@ -43,8 +44,8 @@ public class Transfiguration extends Troll {
     }
 
     @Override
-    public boolean requiresProtocolLib() {
-        return true;
+    public DependencyRequirement getRequirement() {
+        return DependencyRequirement.LIB_DISGUISES;
     }
 
     private class Task extends TrollTask {
