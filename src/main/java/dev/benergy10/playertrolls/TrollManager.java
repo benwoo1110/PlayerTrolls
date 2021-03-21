@@ -22,7 +22,7 @@ public class TrollManager {
             .Creator<PlayerQuitEvent, Player>(PlayerQuitEvent.class)
             .oneTimeUse(true)
             .eventTarget(PlayerEvent::getPlayer)
-            .handler(event -> {
+            .runner(event -> {
                 TrollPlayer trollPlayer = this.playerMap.remove(event.getPlayer());
                 if (trollPlayer != null) {
                     trollPlayer.deactivateAll();

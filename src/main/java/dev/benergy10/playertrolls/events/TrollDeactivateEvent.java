@@ -9,12 +9,12 @@ public class TrollDeactivateEvent extends TrollPlayerEvent {
 
     private static final HandlerList HANDLER_LIST = new HandlerList();
 
-    public TrollDeactivateEvent(Troll troll, TrollPlayer trollPlayer) {
-        super(troll, trollPlayer);
+    public static @NotNull HandlerList getHandlerList() {
+        return HANDLER_LIST;
     }
 
-    public static HandlerList getHandlerList() {
-        return HANDLER_LIST;
+    public TrollDeactivateEvent(@NotNull Troll troll, @NotNull TrollPlayer trollPlayer) {
+        super(troll, trollPlayer);
     }
 
     @Override

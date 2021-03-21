@@ -18,7 +18,7 @@ public class CrazySwingHands extends Troll {
 
     private static final FlagGroup FLAG_GROUP = FlagGroup.of(TrollFlags.DURATION);
 
-    public CrazySwingHands(PlayerTrolls plugin) {
+    public CrazySwingHands(@NotNull PlayerTrolls plugin) {
         super(plugin);
     }
 
@@ -54,7 +54,7 @@ public class CrazySwingHands extends Troll {
     }
 
     @Override
-    public DependencyRequirement getRequirement() {
+    public @NotNull DependencyRequirement getRequirement() {
         return DependencyRequirement.NONE;
     }
 

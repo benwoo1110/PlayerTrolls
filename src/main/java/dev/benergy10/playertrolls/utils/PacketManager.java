@@ -6,19 +6,11 @@ import com.comphenix.protocol.events.PacketContainer;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 
 import java.lang.reflect.InvocationTargetException;
 
 
 public class PacketManager {
-
-    public static @Nullable PacketManager of(@Nullable ProtocolManager manager) {
-        if (manager == null) {
-            return null;
-        }
-        return new PacketManager(manager);
-    }
 
     private final ProtocolManager manager;
 
@@ -43,7 +35,7 @@ public class PacketManager {
         return true;
     }
 
-    public ProtocolManager getManager() {
+    public @NotNull ProtocolManager getManager() {
         return manager;
     }
 }

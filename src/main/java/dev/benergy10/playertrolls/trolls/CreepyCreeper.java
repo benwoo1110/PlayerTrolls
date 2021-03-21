@@ -27,14 +27,14 @@ public class CreepyCreeper extends Troll {
             .Creator<EntityExplodeEvent, Entity>(EntityExplodeEvent.class)
             .oneTimeUse(true)
             .eventTarget(EntityEvent::getEntity)
-            .handler(event -> event.setCancelled(true))
+            .runner(event -> event.setCancelled(true))
             .register(this.plugin);
 
     private final SubscribableEvent<EntityDamageByEntityEvent, Entity> preventPlayerDamage = new SubscribableEvent
             .Creator<EntityDamageByEntityEvent, Entity>(EntityDamageByEntityEvent.class)
             .oneTimeUse(true)
             .eventTarget(EntityDamageByEntityEvent::getDamager)
-            .handler(event -> event.setDamage(0))
+            .runner(event -> event.setDamage(0))
             .register(this.plugin);
 
     public CreepyCreeper(@NotNull PlayerTrolls plugin) {
@@ -68,7 +68,7 @@ public class CreepyCreeper extends Troll {
     }
 
     @Override
-    public DependencyRequirement getRequirement() {
+    public @NotNull DependencyRequirement getRequirement() {
         return DependencyRequirement.NONE;
     }
 

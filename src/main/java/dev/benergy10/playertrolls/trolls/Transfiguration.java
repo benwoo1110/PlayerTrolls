@@ -44,7 +44,7 @@ public class Transfiguration extends Troll {
     }
 
     @Override
-    public DependencyRequirement getRequirement() {
+    public @NotNull DependencyRequirement getRequirement() {
         return DependencyRequirement.LIB_DISGUISES;
     }
 
@@ -52,7 +52,7 @@ public class Transfiguration extends Troll {
 
         private final MobDisguise mobDisguise;
 
-        private Task(MobDisguise mobDisguise) {
+        private Task(@NotNull MobDisguise mobDisguise) {
             this.mobDisguise = mobDisguise;
         }
 

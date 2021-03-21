@@ -1,16 +1,18 @@
 package dev.benergy10.playertrolls.utils;
 
+import org.jetbrains.annotations.NotNull;
+
 public class Alternator<T> {
 
-    public static Alternator<Boolean> ofBoolean() {
+    public static @NotNull Alternator<Boolean> ofBoolean() {
         return ofBoolean(true);
     }
 
-    public static Alternator<Boolean> ofBoolean(boolean startWith) {
+    public static @NotNull Alternator<Boolean> ofBoolean(boolean startWith) {
         return new Alternator<>(startWith, !startWith);
     }
 
-    public static <T> Alternator<T> of(T thisT, T thatT) {
+    public static <T> @NotNull Alternator<T> of(T thisT, T thatT) {
         return new Alternator<>(thisT, thatT);
     }
 

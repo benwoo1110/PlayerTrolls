@@ -23,7 +23,7 @@ public class LightingStrike extends Troll {
             TrollFlags.DO_DAMAGE, TrollFlags.INTENSITY
     );
 
-    public LightingStrike(PlayerTrolls plugin) {
+    public LightingStrike(@NotNull PlayerTrolls plugin) {
         super(plugin);
     }
 
@@ -47,7 +47,7 @@ public class LightingStrike extends Troll {
         int intensity;
         boolean withDamage;
 
-        BukkitTask run() {
+        @NotNull BukkitTask run() {
             return Bukkit.getScheduler().runTaskTimer(LightingStrike.this.plugin, () -> {
                 strikeLightning(trollPlayer.getPlayer().getLocation(), withDamage, intensity);
                 if (counter++ > max) {
@@ -56,7 +56,7 @@ public class LightingStrike extends Troll {
             }, 0, interval);
         }
 
-        private void strikeLightning(Location location, boolean withDamage, int intensity) {
+        private void strikeLightning(@NotNull Location location, boolean withDamage, int intensity) {
             IntStream.range(0, intensity).forEach(i -> {
                 if (withDamage) {
                     location.getWorld().strikeLightning(location);
@@ -78,7 +78,7 @@ public class LightingStrike extends Troll {
     }
 
     @Override
-    public DependencyRequirement getRequirement() {
+    public @NotNull DependencyRequirement getRequirement() {
         return DependencyRequirement.NONE;
     }
 
@@ -86,7 +86,7 @@ public class LightingStrike extends Troll {
 
         private final BukkitTask strikingTask;
 
-        private Task(BukkitTask strikingTask) {
+        private Task(@NotNull BukkitTask strikingTask) {
             this.strikingTask = strikingTask;
         }
 

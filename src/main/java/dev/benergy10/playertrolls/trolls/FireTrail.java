@@ -26,7 +26,7 @@ public class FireTrail extends Troll {
             .Creator<PlayerMoveEvent, Player>(PlayerMoveEvent.class)
             .ignoreCancelled(true)
             .eventTarget(PlayerEvent::getPlayer)
-            .handler(event -> {
+            .runner(event -> {
                 Location from = event.getFrom();
                 Location to = event.getTo();
                 if (to.getBlockX() == from.getBlockX() && to.getBlockZ() == from.getBlockZ()) {
@@ -62,7 +62,7 @@ public class FireTrail extends Troll {
     }
 
     @Override
-    public DependencyRequirement getRequirement() {
+    public @NotNull DependencyRequirement getRequirement() {
         return DependencyRequirement.NONE;
     }
 

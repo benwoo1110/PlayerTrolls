@@ -39,7 +39,7 @@ public class ForbidChest extends Troll {
     private final SubscribableEvent<PlayerInteractEvent, Player> blockChestInteract = new SubscribableEvent
             .Creator<PlayerInteractEvent, Player>(PlayerInteractEvent.class)
             .eventTarget(PlayerEvent::getPlayer)
-            .handler(event -> {
+            .runner(event -> {
                 if (event.getAction() != Action.RIGHT_CLICK_BLOCK) {
                     return;
                 }
@@ -54,7 +54,7 @@ public class ForbidChest extends Troll {
             })
             .register(this.plugin);
 
-    public ForbidChest(PlayerTrolls plugin) {
+    public ForbidChest(@NotNull PlayerTrolls plugin) {
         super(plugin);
     }
 
@@ -76,7 +76,7 @@ public class ForbidChest extends Troll {
     }
 
     @Override
-    public DependencyRequirement getRequirement() {
+    public @NotNull DependencyRequirement getRequirement() {
         return DependencyRequirement.NONE;
     }
 

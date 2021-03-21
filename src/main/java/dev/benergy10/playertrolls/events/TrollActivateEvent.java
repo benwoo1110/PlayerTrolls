@@ -10,13 +10,13 @@ public class TrollActivateEvent extends TrollPlayerEvent implements Cancellable 
 
     private static final HandlerList HANDLER_LIST = new HandlerList();
 
-    public static HandlerList getHandlerList() {
+    public static @NotNull HandlerList getHandlerList() {
         return HANDLER_LIST;
     }
 
     private boolean cancel;
 
-    public TrollActivateEvent(Troll troll, TrollPlayer trollPlayer) {
+    public TrollActivateEvent(@NotNull Troll troll, @NotNull TrollPlayer trollPlayer) {
         super(troll, trollPlayer);
     }
 

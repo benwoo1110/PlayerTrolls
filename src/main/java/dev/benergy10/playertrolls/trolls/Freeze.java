@@ -24,7 +24,7 @@ public class Freeze extends Troll {
             .Creator<PlayerMoveEvent, Player>(PlayerMoveEvent.class)
             .ignoreCancelled(true)
             .eventTarget(PlayerEvent::getPlayer)
-            .handler(event -> {
+            .runner(event -> {
                 Location from = event.getFrom();
                 Location to = event.getTo();
                 if (from.getWorld() != to.getWorld()) {
@@ -42,7 +42,7 @@ public class Freeze extends Troll {
             })
             .register(this.plugin);
 
-    public Freeze(PlayerTrolls plugin) {
+    public Freeze(@NotNull PlayerTrolls plugin) {
         super(plugin);
     }
 
@@ -66,7 +66,7 @@ public class Freeze extends Troll {
     }
 
     @Override
-    public DependencyRequirement getRequirement() {
+    public @NotNull DependencyRequirement getRequirement() {
         return DependencyRequirement.NONE;
     }
 

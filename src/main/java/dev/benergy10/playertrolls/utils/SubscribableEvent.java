@@ -7,8 +7,11 @@ import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.plugin.EventExecutor;
 import org.bukkit.plugin.Plugin;
+import org.jetbrains.annotations.NotNull;
 
+import java.util.Collection;
 import java.util.HashSet;
+import java.util.Objects;
 import java.util.Set;
 import java.util.function.Consumer;
 import java.util.function.Function;
@@ -18,19 +21,19 @@ public class SubscribableEvent<T extends Event, S> {
     private final Class<T> eventClass;
     private final Set<S> subscribers;
 
+    private boolean registered = false;
     private EventPriority priority = EventPriority.NORMAL;
     private boolean ignoreCancelled = false;
     private boolean oneTimeUse = false;
     private Function<T, S> eventTarget;
-    private Consumer<T> handler;
-    private boolean registered = false;
+    private Consumer<T> runner;
 
-    private SubscribableEvent(Class<T> eventClass) {
+    private SubscribableEvent(@NotNull Class<T> eventClass) {
         this.eventClass = eventClass;
         this.subscribers = new HashSet<>();
     }
 
-    public boolean register(Plugin plugin) {
+    public boolean register(@NotNull Plugin plugin) {
         if (this.registered) {
             throw new IllegalArgumentException("Event already registered!");
         }
@@ -46,7 +49,7 @@ public class SubscribableEvent<T extends Event, S> {
         return true;
     }
 
-    private EventExecutor createExecutor() {
+    private @NotNull EventExecutor createExecutor() {
         return (listener, event) -> {
             if (this.subscribers.isEmpty() || !this.eventClass.isInstance(event)) {
                 return;
@@ -56,14 +59,14 @@ public class SubscribableEvent<T extends Event, S> {
             if (!this.subscribers.contains(target)) {
                 return;
             }
-            this.handler.accept(eventInstance);
+            this.runner.accept(eventInstance);
             if (this.oneTimeUse) {
                 this.unsubscribe(target);
             }
         };
     }
 
-    public boolean subscribe(S s) {
+    public boolean subscribe(@NotNull S s) {
         if (!this.registered) {
             throw new IllegalArgumentException("Register the event before adding subscribers!");
         }
@@ -71,12 +74,12 @@ public class SubscribableEvent<T extends Event, S> {
         return this.subscribers.add(s);
     }
 
-    public boolean unsubscribe(S s) {
+    public boolean unsubscribe(@NotNull S s) {
         Logging.debug("Unsubscribing %s from %s...", s, this.eventClass.getName());
         return this.subscribers.remove(s);
     }
 
-    public Class<T> getEventClass() {
+    public @NotNull Class<T> getEventClass() {
         return eventClass;
     }
 
@@ -84,7 +87,7 @@ public class SubscribableEvent<T extends Event, S> {
         return this.subscribers.contains(s);
     }
 
-    public Set<S> getSubscribers() {
+    public @NotNull Collection<S> getSubscribers() {
         return subscribers;
     }
 
@@ -92,7 +95,7 @@ public class SubscribableEvent<T extends Event, S> {
         return registered;
     }
 
-    public EventPriority getPriority() {
+    public @NotNull EventPriority getPriority() {
         return priority;
     }
 
@@ -104,54 +107,57 @@ public class SubscribableEvent<T extends Event, S> {
         return oneTimeUse;
     }
 
-    public Function<T, S> getEventTarget() {
+    public @NotNull Function<T, S> getEventTarget() {
         return eventTarget;
     }
 
-    public Consumer<T> getHandler() {
-        return handler;
+    public @NotNull Consumer<T> getRunner() {
+        return runner;
     }
 
     public static class Creator<T extends Event, S> {
 
         private final SubscribableEvent<T, S> event;
 
-        public Creator(Class<T> eventClass) {
+        public Creator(@NotNull Class<T> eventClass) {
             this.event = new SubscribableEvent<>(eventClass);
         }
 
-        public Creator<T, S> priority(EventPriority priority) {
+        public @NotNull Creator<T, S> priority(@NotNull EventPriority priority) {
             this.event.priority = priority;
             return this;
         }
 
-        public Creator<T, S> ignoreCancelled(boolean ignoreCancelled) {
+        public @NotNull Creator<T, S> ignoreCancelled(boolean ignoreCancelled) {
             this.event.ignoreCancelled = ignoreCancelled;
             return this;
         }
 
-        public Creator<T, S> oneTimeUse(boolean oneTimeUse) {
+        public @NotNull Creator<T, S> oneTimeUse(boolean oneTimeUse) {
             this.event.oneTimeUse = oneTimeUse;
             return this;
         }
 
-        public Creator<T, S> eventTarget(Function<T, S> eventTarget) {
+        public @NotNull Creator<T, S> eventTarget(@NotNull Function<T, S> eventTarget) {
             this.event.eventTarget = eventTarget;
             return this;
         }
 
-        public Creator<T, S> handler(Consumer<T> handler) {
-            this.event.handler = handler;
+        public @NotNull Creator<T, S> runner(@NotNull Consumer<T> runner) {
+            this.event.runner = runner;
             return this;
         }
 
-        public SubscribableEvent<T, S> create() {
+        public @NotNull SubscribableEvent<T, S> create() {
+            Objects.requireNonNull(this.event.eventTarget);
+            Objects.requireNonNull(this.event.runner);
             return this.event;
         }
 
-        public SubscribableEvent<T, S> register(Plugin plugin) {
-            this.event.register(plugin);
-            return this.event;
+        public @NotNull SubscribableEvent<T, S> register(@NotNull Plugin plugin) {
+            final SubscribableEvent<T, S> subscribableEvent = this.create();
+            subscribableEvent.register(plugin);
+            return subscribableEvent;
         }
     }
 }

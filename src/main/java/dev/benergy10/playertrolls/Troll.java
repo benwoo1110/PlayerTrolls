@@ -29,7 +29,7 @@ public abstract class Troll {
 
     public abstract @NotNull FlagGroup getFlagGroup();
 
-    public abstract DependencyRequirement getRequirement();
+    public abstract @NotNull DependencyRequirement getRequirement();
 
     protected abstract static class TrollTask {
         protected abstract boolean stop();

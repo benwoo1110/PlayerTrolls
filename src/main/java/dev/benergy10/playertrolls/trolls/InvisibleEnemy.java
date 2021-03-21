@@ -20,7 +20,7 @@ public class InvisibleEnemy extends Troll {
 
     private static final FlagGroup FLAG_GROUP = FlagGroup.of(TrollFlags.DO_DAMAGE, TrollFlags.DURATION);
 
-    public InvisibleEnemy(PlayerTrolls plugin) {
+    public InvisibleEnemy(@NotNull PlayerTrolls plugin) {
         super(plugin);
     }
 
@@ -57,7 +57,7 @@ public class InvisibleEnemy extends Troll {
     }
 
     @Override
-    public DependencyRequirement getRequirement() {
+    public @NotNull DependencyRequirement getRequirement() {
         return DependencyRequirement.PROTOCOL_LIB;
     }
 
