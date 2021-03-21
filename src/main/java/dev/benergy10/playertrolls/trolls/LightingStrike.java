@@ -6,13 +6,12 @@ import dev.benergy10.minecrafttools.utils.TimeConverter;
 import dev.benergy10.playertrolls.PlayerTrolls;
 import dev.benergy10.playertrolls.Troll;
 import dev.benergy10.playertrolls.TrollPlayer;
-import dev.benergy10.playertrolls.utils.DependencyRequirement;
+import dev.benergy10.playertrolls.contants.DependencyRequirement;
 import dev.benergy10.playertrolls.utils.TrollFlags;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.scheduler.BukkitTask;
 import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 
 import java.util.stream.IntStream;
 
@@ -28,7 +27,7 @@ public class LightingStrike extends Troll {
     }
 
     @Override
-    protected @Nullable TrollTask start(@NotNull TrollPlayer trollPlayer, @NotNull FlagValues flags) {
+    protected @NotNull TrollTask start(@NotNull TrollPlayer trollPlayer, @NotNull FlagValues flags) {
         final StrikingTask strikingTask = new StrikingTask();
         strikingTask.trollPlayer = trollPlayer;
         strikingTask.max = flags.get(TrollFlags.REPEAT);
@@ -91,9 +90,8 @@ public class LightingStrike extends Troll {
         }
 
         @Override
-        protected boolean stop() {
+        protected void stop() {
             this.strikingTask.cancel();
-            return true;
         }
     }
 }

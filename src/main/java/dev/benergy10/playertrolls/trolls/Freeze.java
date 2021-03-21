@@ -6,7 +6,7 @@ import dev.benergy10.minecrafttools.events.SubscribableEvent;
 import dev.benergy10.playertrolls.PlayerTrolls;
 import dev.benergy10.playertrolls.Troll;
 import dev.benergy10.playertrolls.TrollPlayer;
-import dev.benergy10.playertrolls.utils.DependencyRequirement;
+import dev.benergy10.playertrolls.contants.DependencyRequirement;
 import dev.benergy10.playertrolls.utils.TrollFlags;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
@@ -14,7 +14,6 @@ import org.bukkit.event.player.PlayerEvent;
 import org.bukkit.event.player.PlayerMoveEvent;
 import org.bukkit.util.Vector;
 import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 
 public class Freeze extends Troll {
 
@@ -47,7 +46,7 @@ public class Freeze extends Troll {
     }
 
     @Override
-    protected @Nullable TrollTask start(@NotNull TrollPlayer trollPlayer, @NotNull FlagValues flags) {
+    protected @NotNull TrollTask start(@NotNull TrollPlayer trollPlayer, @NotNull FlagValues flags) {
         Player player = trollPlayer.getPlayer();
         player.setWalkSpeed(0F);
         this.freezeMovement.subscribe(player);
@@ -79,10 +78,9 @@ public class Freeze extends Troll {
         }
 
         @Override
-        protected boolean stop() {
+        protected void stop() {
             freezeMovement.unsubscribe(this.player);
             this.player.setWalkSpeed(0.2F);
-            return true;
         }
     }
 }

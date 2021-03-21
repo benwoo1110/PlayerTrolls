@@ -2,11 +2,10 @@ package dev.benergy10.playertrolls.trolls;
 
 import dev.benergy10.minecrafttools.commands.flags.FlagGroup;
 import dev.benergy10.minecrafttools.commands.flags.FlagValues;
-import dev.benergy10.minecrafttools.utils.Logging;
 import dev.benergy10.playertrolls.PlayerTrolls;
 import dev.benergy10.playertrolls.Troll;
 import dev.benergy10.playertrolls.TrollPlayer;
-import dev.benergy10.playertrolls.utils.DependencyRequirement;
+import dev.benergy10.playertrolls.contants.DependencyRequirement;
 import dev.benergy10.playertrolls.utils.PacketManager;
 import dev.benergy10.playertrolls.utils.TrollFlags;
 import org.bukkit.Bukkit;
@@ -14,7 +13,6 @@ import org.bukkit.Sound;
 import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitTask;
 import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 
 public class InvisibleEnemy extends Troll {
 
@@ -25,7 +23,7 @@ public class InvisibleEnemy extends Troll {
     }
 
     @Override
-    protected @Nullable TrollTask start(@NotNull TrollPlayer trollPlayer, @NotNull FlagValues flags) {
+    protected @NotNull TrollTask start(@NotNull TrollPlayer trollPlayer, @NotNull FlagValues flags) {
         PacketManager packetManager = this.plugin.getPacketManager();
         trollPlayer.scheduleDeactivation(this, flags.get(TrollFlags.DURATION));
         return new Task(this.damageTask(packetManager, trollPlayer.getPlayer(), flags.get(TrollFlags.DO_DAMAGE)));
@@ -70,9 +68,8 @@ public class InvisibleEnemy extends Troll {
         }
 
         @Override
-        protected boolean stop() {
+        protected void stop() {
             this.damageTask.cancel();
-            return true;
         }
     }
 }

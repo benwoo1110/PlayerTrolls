@@ -5,13 +5,12 @@ import dev.benergy10.minecrafttools.commands.flags.FlagValues;
 import dev.benergy10.playertrolls.PlayerTrolls;
 import dev.benergy10.playertrolls.Troll;
 import dev.benergy10.playertrolls.TrollPlayer;
-import dev.benergy10.playertrolls.utils.DependencyRequirement;
+import dev.benergy10.playertrolls.contants.DependencyRequirement;
 import dev.benergy10.playertrolls.utils.TrollFlags;
 import me.libraryaddict.disguise.DisguiseConfig;
 import me.libraryaddict.disguise.disguisetypes.DisguiseType;
 import me.libraryaddict.disguise.disguisetypes.MobDisguise;
 import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 
 public class Transfiguration extends Troll {
 
@@ -22,7 +21,7 @@ public class Transfiguration extends Troll {
     }
 
     @Override
-    protected @Nullable TrollTask start(@NotNull TrollPlayer trollPlayer, @NotNull FlagValues flags) {
+    protected @NotNull TrollTask start(@NotNull TrollPlayer trollPlayer, @NotNull FlagValues flags) {
         MobDisguise mobDisguise = new MobDisguise(DisguiseType.CREEPER);
         mobDisguise.setEntity(trollPlayer.getPlayer());
         mobDisguise.setReplaceSounds(true);
@@ -57,8 +56,8 @@ public class Transfiguration extends Troll {
         }
 
         @Override
-        protected boolean stop() {
-            return this.mobDisguise.removeDisguise();
+        protected void stop() {
+            this.mobDisguise.removeDisguise();
         }
     }
 }

@@ -6,7 +6,7 @@ import dev.benergy10.minecrafttools.events.SubscribableEvent;
 import dev.benergy10.playertrolls.PlayerTrolls;
 import dev.benergy10.playertrolls.Troll;
 import dev.benergy10.playertrolls.TrollPlayer;
-import dev.benergy10.playertrolls.utils.DependencyRequirement;
+import dev.benergy10.playertrolls.contants.DependencyRequirement;
 import dev.benergy10.playertrolls.utils.TrollFlags;
 import org.bukkit.Location;
 import org.bukkit.entity.Creeper;
@@ -17,7 +17,6 @@ import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityEvent;
 import org.bukkit.event.entity.EntityExplodeEvent;
 import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 
 public class CreepyCreeper extends Troll {
 
@@ -42,7 +41,7 @@ public class CreepyCreeper extends Troll {
     }
 
     @Override
-    protected @Nullable TrollTask start(@NotNull TrollPlayer trollPlayer, @NotNull FlagValues flags) {
+    protected @NotNull TrollTask start(@NotNull TrollPlayer trollPlayer, @NotNull FlagValues flags) {
         Player player = trollPlayer.getPlayer();
         Location location = player.getLocation().add(player.getLocation().getDirection().multiply(-1));
         Creeper creeper = (Creeper) location.getWorld().spawnEntity(location, EntityType.CREEPER);
@@ -77,8 +76,6 @@ public class CreepyCreeper extends Troll {
         private Task() { }
 
         @Override
-        protected boolean stop() {
-            return true;
-        }
+        protected void stop() { }
     }
 }

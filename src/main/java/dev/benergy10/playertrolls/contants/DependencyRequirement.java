@@ -1,4 +1,4 @@
-package dev.benergy10.playertrolls.utils;
+package dev.benergy10.playertrolls.contants;
 
 import dev.benergy10.minecrafttools.utils.ReflectHelper;
 import org.jetbrains.annotations.NotNull;

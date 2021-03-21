@@ -1,8 +1,11 @@
 package dev.benergy10.playertrolls;
 
+import com.google.common.base.Preconditions;
 import dev.benergy10.minecrafttools.commands.flags.FlagValues;
 import dev.benergy10.minecrafttools.utils.Logging;
 import dev.benergy10.minecrafttools.utils.TimeConverter;
+import dev.benergy10.playertrolls.contants.ActivationResult;
+import dev.benergy10.playertrolls.contants.DeactivationResult;
 import dev.benergy10.playertrolls.events.TrollActivateEvent;
 import dev.benergy10.playertrolls.events.TrollDeactivateEvent;
 import org.bukkit.Bukkit;
@@ -29,45 +32,55 @@ public class TrollPlayer {
         this.scheduledDeactivation = new HashMap<>();
     }
 
-    public boolean activateTroll(@NotNull Troll troll, @NotNull FlagValues flags) {
+    public ActivationResult activateTroll(@NotNull Troll troll, @NotNull FlagValues flags) {
         if (!troll.isRegistered()) {
             throw new IllegalArgumentException("Troll is not registered: " + troll.getName());
         }
         if (!troll.getRequirement().hasRequiredClasses()) {
-            Logging.warning("You did not meet the requirement of this troll: %s", troll.getRequirement());
-            return false;
+            return ActivationResult.MISSING_DEPENDENCY;
+        }
+        if (this.isActiveTroll(troll)) {
+            return ActivationResult.ALREADY_ACTIVE;
         }
         TrollActivateEvent enableEvent = new TrollActivateEvent(troll, this);
         Bukkit.getPluginManager().callEvent(enableEvent);
         if (enableEvent.isCancelled()) {
             Logging.debug("Troll activation was canceled by another plugin!");
-            return false;
+            return ActivationResult.CANCELLED;
         }
         Logging.debug("Activating troll %s for %s...",troll, this.player);
-        Troll.TrollTask runner = troll.start(this, flags);
-        if (runner == null) {
-            return false;
+        Troll.TrollTask runner;
+        try {
+            runner = troll.start(this, flags);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return ActivationResult.ERRORED;
         }
         this.activeTrolls.put(troll, runner);
-        return true;
+        return ActivationResult.ACTIVATED;
     }
 
-    public boolean deactivateTroll(@NotNull Troll troll) {
+    public DeactivationResult deactivateTroll(@NotNull Troll troll) {
         if (!troll.isRegistered()) {
             throw new IllegalArgumentException("Troll is not registered: " + troll.getName());
         }
         Troll.TrollTask task = this.activeTrolls.remove(troll);
         if (task == null) {
-            Logging.warning("No task to deactivate for: %s %s", this.player, troll);
-            return false;
-        }
-        final BukkitTask stopTask = this.scheduledDeactivation.remove(troll);
-        if (stopTask != null) {
-            stopTask.cancel();
+            return DeactivationResult.NOT_ACTIVE;
         }
         Logging.debug("Deactivating troll %s for %s...", troll, this.player);
         Bukkit.getPluginManager().callEvent(new TrollDeactivateEvent(troll, this));
-        return task.stop();
+        final BukkitTask stopTask = this.scheduledDeactivation.remove(troll);
+        if (stopTask != null && !stopTask.isCancelled()) {
+            stopTask.cancel();
+        }
+        try {
+            task.stop();
+        } catch (Exception e) {
+            e.printStackTrace();
+            return DeactivationResult.ERRORED;
+        }
+        return DeactivationResult.DEACTIVATED;
     }
 
     public void scheduleDeactivation(@NotNull Troll troll, double seconds) {

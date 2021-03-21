@@ -2,9 +2,8 @@ package dev.benergy10.playertrolls;
 
 import dev.benergy10.minecrafttools.commands.flags.FlagGroup;
 import dev.benergy10.minecrafttools.commands.flags.FlagValues;
-import dev.benergy10.playertrolls.utils.DependencyRequirement;
+import dev.benergy10.playertrolls.contants.DependencyRequirement;
 import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 
 public abstract class Troll {
 
@@ -23,7 +22,7 @@ public abstract class Troll {
         return registered;
     }
 
-    protected abstract @Nullable TrollTask start(@NotNull TrollPlayer trollPlayer, @NotNull FlagValues flags);
+    protected abstract @NotNull TrollTask start(@NotNull TrollPlayer trollPlayer, @NotNull FlagValues flags);
 
     public abstract @NotNull String getName();
 
@@ -32,7 +31,7 @@ public abstract class Troll {
     public abstract @NotNull DependencyRequirement getRequirement();
 
     protected abstract static class TrollTask {
-        protected abstract boolean stop();
+        protected abstract void stop();
     }
 
     @Override

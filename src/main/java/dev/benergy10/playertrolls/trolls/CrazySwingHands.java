@@ -6,13 +6,12 @@ import dev.benergy10.minecrafttools.utils.Alternator;
 import dev.benergy10.playertrolls.PlayerTrolls;
 import dev.benergy10.playertrolls.Troll;
 import dev.benergy10.playertrolls.TrollPlayer;
-import dev.benergy10.playertrolls.utils.DependencyRequirement;
+import dev.benergy10.playertrolls.contants.DependencyRequirement;
 import dev.benergy10.playertrolls.utils.TrollFlags;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitTask;
 import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 
 public class CrazySwingHands extends Troll {
 
@@ -23,7 +22,7 @@ public class CrazySwingHands extends Troll {
     }
 
     @Override
-    protected @Nullable TrollTask start(@NotNull TrollPlayer trollPlayer, @NotNull FlagValues flags) {
+    protected @NotNull TrollTask start(@NotNull TrollPlayer trollPlayer, @NotNull FlagValues flags) {
         trollPlayer.scheduleDeactivation(this, flags.get(TrollFlags.DURATION));
         return new Task(this.swingTask(trollPlayer.getPlayer()));
     }
@@ -67,9 +66,8 @@ public class CrazySwingHands extends Troll {
         }
 
         @Override
-        protected boolean stop() {
+        protected void stop() {
             this.swingTask.cancel();
-            return true;
         }
     }
 }

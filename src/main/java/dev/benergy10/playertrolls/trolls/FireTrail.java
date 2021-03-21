@@ -6,7 +6,7 @@ import dev.benergy10.minecrafttools.events.SubscribableEvent;
 import dev.benergy10.playertrolls.PlayerTrolls;
 import dev.benergy10.playertrolls.Troll;
 import dev.benergy10.playertrolls.TrollPlayer;
-import dev.benergy10.playertrolls.utils.DependencyRequirement;
+import dev.benergy10.playertrolls.contants.DependencyRequirement;
 import dev.benergy10.playertrolls.utils.TrollFlags;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
@@ -16,7 +16,6 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.player.PlayerEvent;
 import org.bukkit.event.player.PlayerMoveEvent;
 import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 
 public class FireTrail extends Troll {
 
@@ -44,7 +43,7 @@ public class FireTrail extends Troll {
     }
 
     @Override
-    protected @Nullable TrollTask start(@NotNull TrollPlayer trollPlayer, @NotNull FlagValues flags) {
+    protected @NotNull TrollTask start(@NotNull TrollPlayer trollPlayer, @NotNull FlagValues flags) {
         Player player = trollPlayer.getPlayer();
         trollPlayer.scheduleDeactivation(this, flags.get(TrollFlags.DURATION));
         this.fireMovement.subscribe(player);
@@ -75,9 +74,8 @@ public class FireTrail extends Troll {
         }
 
         @Override
-        protected boolean stop() {
+        protected void stop() {
             fireMovement.unsubscribe(this.player);
-            return true;
         }
     }
 }
