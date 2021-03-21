@@ -2,10 +2,10 @@ package dev.benergy10.playertrolls.trolls;
 
 import dev.benergy10.minecrafttools.commands.flags.FlagGroup;
 import dev.benergy10.minecrafttools.commands.flags.FlagValues;
+import dev.benergy10.minecrafttools.utils.Alternator;
 import dev.benergy10.playertrolls.PlayerTrolls;
 import dev.benergy10.playertrolls.Troll;
 import dev.benergy10.playertrolls.TrollPlayer;
-import dev.benergy10.playertrolls.utils.Alternator;
 import dev.benergy10.playertrolls.utils.DependencyRequirement;
 import dev.benergy10.playertrolls.utils.TrollFlags;
 import org.bukkit.Bukkit;

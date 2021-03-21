@@ -1,7 +1,7 @@
 package dev.benergy10.playertrolls;
 
 import com.google.common.base.Function;
-import dev.benergy10.playertrolls.utils.SubscribableEvent;
+import dev.benergy10.minecrafttools.events.SubscribableEvent;
 import org.bukkit.entity.Player;
 import org.bukkit.event.player.PlayerEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
