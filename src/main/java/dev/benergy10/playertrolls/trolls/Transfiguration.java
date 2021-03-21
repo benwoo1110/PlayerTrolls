@@ -8,13 +8,12 @@ import dev.benergy10.playertrolls.TrollPlayer;
 import dev.benergy10.playertrolls.contants.DependencyRequirement;
 import dev.benergy10.playertrolls.utils.TrollFlags;
 import me.libraryaddict.disguise.DisguiseConfig;
-import me.libraryaddict.disguise.disguisetypes.DisguiseType;
 import me.libraryaddict.disguise.disguisetypes.MobDisguise;
 import org.jetbrains.annotations.NotNull;
 
 public class Transfiguration extends Troll {
 
-    private static final FlagGroup FLAG_GROUP = FlagGroup.of(TrollFlags.DURATION);
+    private static final FlagGroup FLAG_GROUP = FlagGroup.of(TrollFlags.DURATION, TrollFlags.MOB_TYPE);
 
     public Transfiguration(@NotNull PlayerTrolls plugin) {
         super(plugin);
@@ -22,7 +21,7 @@ public class Transfiguration extends Troll {
 
     @Override
     protected @NotNull TrollTask start(@NotNull TrollPlayer trollPlayer, @NotNull FlagValues flags) {
-        MobDisguise mobDisguise = new MobDisguise(DisguiseType.CREEPER);
+        MobDisguise mobDisguise = new MobDisguise(flags.get(TrollFlags.MOB_TYPE));
         mobDisguise.setEntity(trollPlayer.getPlayer());
         mobDisguise.setReplaceSounds(true);
         mobDisguise.setViewSelfDisguise(false);

@@ -2,6 +2,14 @@ package dev.benergy10.playertrolls.utils;
 
 import dev.benergy10.minecrafttools.commands.flags.Flag;
 import dev.benergy10.minecrafttools.commands.flags.FlagCreatorTool;
+import dev.benergy10.minecrafttools.commands.flags.FlagParseFailedException;
+import dev.benergy10.minecrafttools.commands.flags.RequiredValueFlag;
+import me.libraryaddict.disguise.disguisetypes.DisguiseType;
+import org.jetbrains.annotations.NotNull;
+
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.stream.Collectors;
 
 public class TrollFlags {
 
@@ -42,4 +50,28 @@ public class TrollFlags {
             .BooleanCreator("ExplodeBlocks", "--explode-blocks")
             .presentValue(true)
             .create();
+
+    public static final Flag<DisguiseType> MOB_TYPE = new RequiredValueFlag<DisguiseType>("MobType", "--mod-type", DisguiseType.class) {
+        @Override
+        public Collection<String> suggestValue() {
+            return Arrays.stream(DisguiseType.values())
+                    .filter(DisguiseType::isMob)
+                    .map(DisguiseType::name)
+                    .collect(Collectors.toList());
+        }
+
+        @Override
+        public DisguiseType getValue(@NotNull String input) {
+            try {
+                return DisguiseType.valueOf(input.toUpperCase());
+            } catch (IllegalArgumentException e) {
+                throw new FlagParseFailedException("%s is not a valid mob.", input);
+            }
+        }
+
+        @Override
+        public DisguiseType getDefaultValue() {
+            return DisguiseType.CREEPER;
+        }
+    };
 }
