@@ -22,10 +22,10 @@ public class Transfiguration extends Troll {
     @Override
     protected @NotNull TrollTask start(@NotNull TrollPlayer trollPlayer, @NotNull FlagValues flags) {
         MobDisguise mobDisguise = new MobDisguise(flags.get(TrollFlags.MOB_TYPE));
-        mobDisguise.setEntity(trollPlayer.getPlayer());
-        mobDisguise.setReplaceSounds(true);
-        mobDisguise.setViewSelfDisguise(false);
-        mobDisguise.setNotifyBar(DisguiseConfig.NotifyBar.NONE);
+        mobDisguise.setEntity(trollPlayer.getPlayer())
+                .setReplaceSounds(true)
+                .setViewSelfDisguise(false)
+                .setNotifyBar(DisguiseConfig.NotifyBar.NONE);
         mobDisguise.startDisguise();
         trollPlayer.scheduleDeactivation(this, flags.get(TrollFlags.DURATION));
         return new Task(mobDisguise);
