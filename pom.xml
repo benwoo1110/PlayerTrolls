@@ -141,6 +141,10 @@
             <id>phoenix616</id>
             <url>https://repo.phoenix616.dev/</url>
         </repository>
+        <repository>
+            <id>md_5-public</id>
+            <url>https://repo.md-5.net/content/groups/public/</url>
+        </repository>
     </repositories>
 
     <dependencies>
@@ -159,6 +163,12 @@
             <groupId>com.comphenix.protocol</groupId>
             <artifactId>ProtocolLib</artifactId>
             <version>4.6.0</version>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>LibsDisguises</groupId>
+            <artifactId>LibsDisguises</artifactId>
+            <version>10.0.24</version>
             <scope>provided</scope>
         </dependency>
     </dependencies>

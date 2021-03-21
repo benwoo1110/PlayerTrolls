@@ -13,6 +13,7 @@ import dev.benergy10.playertrolls.trolls.ForbidChest;
 import dev.benergy10.playertrolls.trolls.Freeze;
 import dev.benergy10.playertrolls.trolls.InvisibleEnemy;
 import dev.benergy10.playertrolls.trolls.LightingStrike;
+import dev.benergy10.playertrolls.trolls.Transfiguration;
 import dev.benergy10.playertrolls.utils.CommandTools;
 import dev.benergy10.playertrolls.utils.PacketManager;
 import dev.benergy10.playertrolls.utils.TrollOptions;
@@ -38,7 +39,8 @@ public final class PlayerTrolls extends MinecraftPlugin {
                 .register(new CrazySwingHands(this))
                 .register(new InvisibleEnemy(this))
                 .register(new ForbidChest(this))
-                .register(new CreepyCreeper(this));
+                .register(new CreepyCreeper(this))
+                .register(new Transfiguration(this));
 
         CommandTools.setUp(this);
     }

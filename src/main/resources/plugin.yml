@@ -4,4 +4,4 @@ main: dev.benergy10.playertrolls.PlayerTrolls
 api-version: 1.13
 authors: [ benwo1110 ]
 description: ${project.description}
-softdepend: ['ProtocolLib']
+softdepend: [ ProtocolLib, LibsDisguises ]
