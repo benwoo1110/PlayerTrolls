@@ -2,6 +2,14 @@ package dev.benergy10.playertrolls.utils;
 
 public class Alternator<T> {
 
+    public static Alternator<Boolean> ofBoolean() {
+        return ofBoolean(true);
+    }
+
+    public static Alternator<Boolean> ofBoolean(boolean startWith) {
+        return new Alternator<>(startWith, !startWith);
+    }
+
     public static <T> Alternator<T> of(T thisT, T thatT) {
         return new Alternator<>(thisT, thatT);
     }
@@ -33,5 +41,9 @@ public class Alternator<T> {
 
     public void setThat(T thatT) {
         this.thatT = thatT;
+    }
+
+    public boolean isState() {
+        return state;
     }
 }

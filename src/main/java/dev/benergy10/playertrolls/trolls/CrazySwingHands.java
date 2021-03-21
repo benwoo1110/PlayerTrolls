@@ -29,7 +29,7 @@ public class CrazySwingHands extends Troll {
     }
 
     private BukkitTask swingTask(@NotNull Player player) {
-        Alternator<Boolean> handType = Alternator.of(true, false);
+        Alternator<Boolean> handType = Alternator.ofBoolean();
         return Bukkit.getScheduler().runTaskTimer(
                 this.plugin,
                 () -> {
