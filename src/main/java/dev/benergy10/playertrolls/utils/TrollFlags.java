@@ -4,11 +4,14 @@ import dev.benergy10.minecrafttools.commands.flags.Flag;
 import dev.benergy10.minecrafttools.commands.flags.FlagCreatorTool;
 import dev.benergy10.minecrafttools.commands.flags.FlagParseFailedException;
 import dev.benergy10.minecrafttools.commands.flags.RequiredValueFlag;
+import dev.benergy10.minecrafttools.utils.ReflectHelper;
 import me.libraryaddict.disguise.disguisetypes.DisguiseType;
+import org.bukkit.entity.EntityType;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.stream.Collectors;
 
 public class TrollFlags {
@@ -51,27 +54,30 @@ public class TrollFlags {
             .presentValue(true)
             .create();
 
-    public static final Flag<DisguiseType> MOB_TYPE = new RequiredValueFlag<DisguiseType>("MobType", "--mod-type", DisguiseType.class) {
+    public static final Flag<EntityType> DISGUISE_TYPE = new RequiredValueFlag<EntityType>("MobType", "--mod-type", EntityType.class) {
         @Override
         public Collection<String> suggestValue() {
+            if (!ReflectHelper.hasClass("me.libraryaddict.disguise.disguisetypes.DisguiseType")) {
+                return Collections.emptyList();
+            }
             return Arrays.stream(DisguiseType.values())
                     .filter(DisguiseType::isMob)
-                    .map(DisguiseType::name)
+                    .map(type -> type.getEntityType().name().toLowerCase())
                     .collect(Collectors.toList());
         }
 
         @Override
-        public DisguiseType getValue(@NotNull String input) {
+        public EntityType getValue(@NotNull String input) {
             try {
-                return DisguiseType.valueOf(input.toUpperCase());
+                return EntityType.valueOf(input.toUpperCase());
             } catch (IllegalArgumentException e) {
                 throw new FlagParseFailedException("%s is not a valid mob.", input);
             }
         }
 
         @Override
-        public DisguiseType getDefaultValue() {
-            return DisguiseType.CREEPER;
+        public EntityType getDefaultValue() {
+            return EntityType.CREEPER;
         }
     };
 }
