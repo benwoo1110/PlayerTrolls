@@ -2,6 +2,7 @@ package dev.benergy10.playertrolls.commands;
 
 import dev.benergy10.minecrafttools.acf.annotation.CommandAlias;
 import dev.benergy10.minecrafttools.acf.annotation.CommandCompletion;
+import dev.benergy10.minecrafttools.acf.annotation.CommandPermission;
 import dev.benergy10.minecrafttools.acf.annotation.Name;
 import dev.benergy10.minecrafttools.acf.annotation.Subcommand;
 import dev.benergy10.minecrafttools.acf.annotation.Syntax;
@@ -19,6 +20,7 @@ public class ApplyTrollCommand extends Command {
     }
 
     @Subcommand("applytroll")
+    @CommandPermission("playertrolls.applytroll")
     @CommandCompletion("@players @trolls @trollflags")
     @Syntax("<player> <troll> [flags]")
     public void onTroll(@NotNull @Name("player") TrollPlayer trollPlayer,

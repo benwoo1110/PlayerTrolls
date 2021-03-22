@@ -98,6 +98,10 @@ public class TrollPlayer {
         this.activeTrolls.keySet().iterator().forEachRemaining(this::deactivateTroll);
     }
 
+    public boolean canUseTroll(Troll troll) {
+        return this.player.hasPermission(troll.getPermission());
+    }
+
     public boolean isActiveTroll(@Nullable Troll troll) {
         return this.activeTrolls.containsKey(troll);
     }

@@ -2,6 +2,7 @@ package dev.benergy10.playertrolls.commands;
 
 import dev.benergy10.minecrafttools.acf.annotation.CommandAlias;
 import dev.benergy10.minecrafttools.acf.annotation.CommandCompletion;
+import dev.benergy10.minecrafttools.acf.annotation.CommandPermission;
 import dev.benergy10.minecrafttools.acf.annotation.Name;
 import dev.benergy10.minecrafttools.acf.annotation.Subcommand;
 import dev.benergy10.minecrafttools.acf.annotation.Syntax;
@@ -18,6 +19,7 @@ public class RemoveTrollCommand extends Command {
     }
 
     @Subcommand("removetroll")
+    @CommandPermission("playertrolls.removetroll")
     @CommandCompletion("@players @activetrolls")
     @Syntax("<player> <activetroll>")
     public void onTroll(@NotNull @Name("player") TrollPlayer trollPlayer,
