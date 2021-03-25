@@ -30,9 +30,24 @@ public class TrollOptions {
         };
     }
 
+    public static final ConfigOption<Boolean> ALLOW_DAMAGE_OPTION = new ConfigOption.Builder<Boolean>()
+            .path("disabled-trolls")
+            .comment("Some trolls have the option to inflict real damage to players, such as with the")
+            .comment("'--do-damage' flag. When set to false, PlayerTrolls will completely disable")
+            .comment("such an option.")
+            .defaultValue(true)
+            .register(TrollOptions::register);
+
+    public static final ConfigOption<List<String>> DISABLED_TROLLS = new ConfigOption.Builder<List<String>>()
+            .path("disabled-trolls")
+            .comment("Disable trolls that you do not want to use. Note: This will only apply after a")
+            .comment("server restart.")
+            .defaultValue(new ArrayList<>())
+            .register(TrollOptions::register);
+
     public static final ConfigOption<Boolean> DEBUG_MODE = new ConfigOption.Builder<Boolean>()
-            .path("enable-debug-log")
-            .comment("Do debugging stuff")
+            .path("enable-debug-mode")
+            .comment("Extra logging for more debug info. Used for testing and issue reporting.")
             .defaultValue(false)
             .register(TrollOptions::register);
 }
