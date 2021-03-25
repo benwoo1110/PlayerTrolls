@@ -43,6 +43,10 @@ public final class PlayerTrolls extends MinecraftPlugin {
         CommandTools.setUp(this);
     }
 
+    public boolean reload() {
+        return this.config.reload();
+    }
+
     public TrollManager getTrollManager() {
         return this.trollManager;
     }

@@ -5,6 +5,7 @@ import dev.benergy10.minecrafttools.acf.annotation.CommandAlias;
 import dev.benergy10.minecrafttools.acf.annotation.CommandPermission;
 import dev.benergy10.minecrafttools.acf.annotation.Subcommand;
 import dev.benergy10.playertrolls.PlayerTrolls;
+import dev.benergy10.playertrolls.contants.Messages;
 import org.jetbrains.annotations.NotNull;
 
 @CommandAlias("playertrolls|trolls")
@@ -17,6 +18,10 @@ public class ReloadCommand extends Command {
     @Subcommand("reload")
     @CommandPermission("playertrolls.reload")
     public void onReload(@NotNull CommandIssuer issuer) {
-        issuer.sendMessage("Reloading plugin...");
+        if (this.plugin.reload()) {
+            issuer.sendInfo(Messages.RELOAD_SUCCESS);
+            return;
+        }
+        issuer.sendInfo(Messages.RELOAD_ERRORED);
     }
 }

@@ -36,6 +36,9 @@ public class CommandTools {
         CommandCompletions<BukkitCommandCompletionContext> completions = manager.getCommandCompletions();
         CommandContexts<BukkitCommandExecutionContext> context = manager.getCommandContexts();
 
+        manager.getLocales().addMessageBundles("playertrolls");
+        manager.getLocales().loadLanguages();
+
         completions.registerAsyncCompletion("trolls", this::suggestTrolls);
         completions.registerAsyncCompletion("activetrolls", this::suggestActiveTrolls);
         completions.registerAsyncCompletion("trollflags", this::suggestTrollFlags);
