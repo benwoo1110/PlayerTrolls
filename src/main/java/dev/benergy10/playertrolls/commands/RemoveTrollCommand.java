@@ -29,6 +29,9 @@ public class RemoveTrollCommand extends Command {
 
         DeactivationResult result = trollPlayer.deactivateTroll(troll);
 
-        issuer.sendInfo(result.getMessage(), "{troll}", troll.getName());
+        issuer.sendInfo(result.getMessage(),
+                "{troll}", troll.getName(),
+                "{player}", trollPlayer.getPlayer().getName()
+        );
     }
 }

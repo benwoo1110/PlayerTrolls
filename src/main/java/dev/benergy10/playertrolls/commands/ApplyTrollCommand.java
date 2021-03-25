@@ -33,6 +33,10 @@ public class ApplyTrollCommand extends Command {
         FlagValues flags = troll.getFlagGroup().parse(flagsArray);
         ActivationResult result = trollPlayer.activateTroll(troll, flags);
 
-        issuer.sendInfo(result.getMessage(), "{troll}", troll.getName());
+        issuer.sendInfo(result.getMessage(),
+                "{troll}", troll.getName(),
+                "{player}", trollPlayer.getPlayer().getName(),
+                "{dependency}", troll.getRequirement().toString()
+        );
     }
 }
