@@ -5,7 +5,7 @@ import dev.benergy10.minecrafttools.commands.flags.FlagValues;
 import dev.benergy10.playertrolls.PlayerTrolls;
 import dev.benergy10.playertrolls.Troll;
 import dev.benergy10.playertrolls.TrollPlayer;
-import dev.benergy10.playertrolls.contants.DependencyRequirement;
+import dev.benergy10.playertrolls.enums.DependencyRequirement;
 import dev.benergy10.playertrolls.utils.TrollFlags;
 import me.libraryaddict.disguise.DisguiseConfig;
 import me.libraryaddict.disguise.disguisetypes.DisguiseType;

@@ -5,7 +5,7 @@ import dev.benergy10.minecrafttools.acf.annotation.CommandAlias;
 import dev.benergy10.minecrafttools.acf.annotation.CommandPermission;
 import dev.benergy10.minecrafttools.acf.annotation.Subcommand;
 import dev.benergy10.playertrolls.PlayerTrolls;
-import dev.benergy10.playertrolls.contants.Messages;
+import dev.benergy10.playertrolls.enums.Messages;
 import org.jetbrains.annotations.NotNull;
 
 @CommandAlias("playertrolls|trolls")

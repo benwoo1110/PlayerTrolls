@@ -1,11 +1,10 @@
 package dev.benergy10.playertrolls;
 
-import com.google.common.base.Preconditions;
 import dev.benergy10.minecrafttools.commands.flags.FlagValues;
 import dev.benergy10.minecrafttools.utils.Logging;
 import dev.benergy10.minecrafttools.utils.TimeConverter;
-import dev.benergy10.playertrolls.contants.ActivationResult;
-import dev.benergy10.playertrolls.contants.DeactivationResult;
+import dev.benergy10.playertrolls.enums.ActivationResult;
+import dev.benergy10.playertrolls.enums.DeactivationResult;
 import dev.benergy10.playertrolls.events.TrollActivateEvent;
 import dev.benergy10.playertrolls.events.TrollDeactivateEvent;
 import org.bukkit.Bukkit;

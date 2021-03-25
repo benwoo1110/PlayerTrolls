@@ -1,4 +1,4 @@
-package dev.benergy10.playertrolls.contants;
+package dev.benergy10.playertrolls.enums;
 
 public enum DeactivationResult {
 

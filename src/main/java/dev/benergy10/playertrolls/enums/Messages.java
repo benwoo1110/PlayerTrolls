@@ -1,4 +1,4 @@
-package dev.benergy10.playertrolls.contants;
+package dev.benergy10.playertrolls.enums;
 
 import dev.benergy10.minecrafttools.locales.MessageKey;
 import dev.benergy10.minecrafttools.locales.MessageKeyProvider;

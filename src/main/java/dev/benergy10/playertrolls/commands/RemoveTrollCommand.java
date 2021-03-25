@@ -10,7 +10,7 @@ import dev.benergy10.minecrafttools.acf.annotation.Syntax;
 import dev.benergy10.playertrolls.PlayerTrolls;
 import dev.benergy10.playertrolls.Troll;
 import dev.benergy10.playertrolls.TrollPlayer;
-import dev.benergy10.playertrolls.contants.DeactivationResult;
+import dev.benergy10.playertrolls.enums.DeactivationResult;
 import org.jetbrains.annotations.NotNull;
 
 @CommandAlias("playertrolls|trolls")

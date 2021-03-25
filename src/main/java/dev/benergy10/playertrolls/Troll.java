@@ -2,7 +2,7 @@ package dev.benergy10.playertrolls;
 
 import dev.benergy10.minecrafttools.commands.flags.FlagGroup;
 import dev.benergy10.minecrafttools.commands.flags.FlagValues;
-import dev.benergy10.playertrolls.contants.DependencyRequirement;
+import dev.benergy10.playertrolls.enums.DependencyRequirement;
 import org.bukkit.Bukkit;
 import org.bukkit.permissions.Permission;
 import org.jetbrains.annotations.NotNull;

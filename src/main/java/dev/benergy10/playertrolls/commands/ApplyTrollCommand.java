@@ -11,7 +11,7 @@ import dev.benergy10.minecrafttools.commands.flags.FlagValues;
 import dev.benergy10.playertrolls.PlayerTrolls;
 import dev.benergy10.playertrolls.Troll;
 import dev.benergy10.playertrolls.TrollPlayer;
-import dev.benergy10.playertrolls.contants.ActivationResult;
+import dev.benergy10.playertrolls.enums.ActivationResult;
 import org.jetbrains.annotations.NotNull;
 
 @CommandAlias("playertrolls|trolls")

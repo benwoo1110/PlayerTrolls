@@ -6,7 +6,7 @@ import dev.benergy10.minecrafttools.events.SubscribableEvent;
 import dev.benergy10.playertrolls.PlayerTrolls;
 import dev.benergy10.playertrolls.Troll;
 import dev.benergy10.playertrolls.TrollPlayer;
-import dev.benergy10.playertrolls.contants.DependencyRequirement;
+import dev.benergy10.playertrolls.enums.DependencyRequirement;
 import dev.benergy10.playertrolls.utils.TrollFlags;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
