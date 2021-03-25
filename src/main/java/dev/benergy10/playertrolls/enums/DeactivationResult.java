@@ -1,6 +1,8 @@
 package dev.benergy10.playertrolls.enums;
 
-public enum DeactivationResult {
+import dev.benergy10.playertrolls.utils.Messageable;
+
+public enum DeactivationResult implements Messageable {
 
     DEACTIVATED(Messages.REMOVE_DEACTIVATED),
     NOT_ACTIVE(Messages.REMOVE_NOT_ACTIVE),
@@ -12,6 +14,7 @@ public enum DeactivationResult {
         this.message = message;
     }
 
+    @Override
     public Messages getMessage() {
         return message;
     }

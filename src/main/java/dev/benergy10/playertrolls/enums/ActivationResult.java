@@ -1,6 +1,8 @@
 package dev.benergy10.playertrolls.enums;
 
-public enum ActivationResult {
+import dev.benergy10.playertrolls.utils.Messageable;
+
+public enum ActivationResult implements Messageable {
 
     ACTIVATED(Messages.APPLY_ACTIVATED),
     CANCELLED(Messages.APPLY_CANCELLED),
@@ -14,6 +16,7 @@ public enum ActivationResult {
         this.message = message;
     }
 
+    @Override
     public Messages getMessage() {
         return message;
     }
